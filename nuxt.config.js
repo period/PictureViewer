@@ -22,8 +22,7 @@ export default {
   /*
   ** Global CSS
   */
-  css: [
-  ],
+  css: [],
   /*
   ** Plugins to load before mounting the App
   */
@@ -37,11 +36,12 @@ export default {
   /*
   ** Nuxt.js modules
   */
-  modules: [
-    // Doc: https://bootstrap-vue.js.org
-    'bootstrap-vue/nuxt',
+  modules: [,
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    'bootstrap-vue/nuxt',
+    '@nuxtjs/moment',
+    ['@nuxtjs/moment', { tdefaultLocale: 'en', locales: ['en'] }],
   ],
   /*
   ** Axios module configuration
@@ -56,7 +56,7 @@ export default {
     /*
     ** You can extend webpack config here
     */
-    extend (config, ctx) {
+    extend(config, ctx) {
     }
   }
 }

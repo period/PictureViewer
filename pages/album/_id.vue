@@ -1,0 +1,36 @@
+<template>
+  <div class="container">
+    <div>
+      <b-card-group>
+          <div v-for="photo in photos" :key="photo.uuid">
+            <album-content-item :photo="photo"></album-content-item>
+          </div>
+      </b-card-group>
+    </div>
+  </div>
+</template>
+<script>
+import AlbumContentItem from "../../components/AlbumContentItem";
+export default {
+  name: "Album",
+  components: { AlbumContentItem },
+  mounted() {
+    this.getPhotos();
+  },
+  methods: {
+    async getPhotos() {
+      await this.$axios
+        .$get("https://pics.thomas.gg/api/albums/retrieve?id=" + this.$route.params.id, {})
+        .then(res => {
+          this.photos = res.photos;
+        })
+        .catch(res => {});
+    },
+  },
+  data() {
+    return {
+      photos: []
+    };
+  }
+};
+</script>
