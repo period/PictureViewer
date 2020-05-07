@@ -42,6 +42,7 @@ export default {
     'bootstrap-vue/nuxt',
     '@nuxtjs/moment',
     ['@nuxtjs/moment', { tdefaultLocale: 'en', locales: ['en'] }],
+    ["nuxt-fontawesome", {component: "fa", imports: [{set: "@fortawesome/free-solid-svg-icons", icons: ["fas"]}]}]
   ],
   /*
   ** Axios module configuration
