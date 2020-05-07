@@ -8,7 +8,7 @@
       top
     ></b-card-img>
     <template v-slot:footer>
-      <small class="text-muted">Last updated {{ time }}</small>
+      <small class="text-muted">{{ album.photos }} photos / Last updated {{ time }}</small>
         <b-button class="float-right" variant="primary" :to="'/album/' + album.id">View</b-button>
     </template>
   </b-card>
