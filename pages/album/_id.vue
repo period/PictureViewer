@@ -3,7 +3,7 @@
     <div>
       <b-card-group>
           <div v-for="photo in photos" :key="photo.uuid">
-            <album-content-item :photo="photo"></album-content-item>
+            <album-content-item :photo="photo" :id="photo.uuid"></album-content-item>
           </div>
       </b-card-group>
     </div>
@@ -23,6 +23,11 @@ export default {
         .$get("https://pics.thomas.gg/api/albums/retrieve?id=" + this.$route.params.id, {})
         .then(res => {
           this.photos = res.photos;
+          if(this.$route.hash) {
+            this.$nextTick(() => {
+              document.getElementById(this.$route.hash.replace("#", "")).scrollIntoView(true);
+            })
+          }
         })
         .catch(res => {});
     },
