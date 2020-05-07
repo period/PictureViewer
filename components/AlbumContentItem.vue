@@ -1,12 +1,12 @@
 <template>
   <b-card>
     <b-card-title>{{ photo.aircraft.registration }}</b-card-title>
-    <b-card-img
+    <b-card-img-lazy
       :src="
         'https://pics.thomas.gg/storage/thumbnails/' + photo.uuid + '.jpg'
       "
       top
-    ></b-card-img>
+    ></b-card-img-lazy>
     <b-card-text>
       {{ photo.description }}
     </b-card-text>

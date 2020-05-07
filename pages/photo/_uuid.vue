@@ -26,7 +26,7 @@
         <b-card no-body class="overflow-hidden" style="max-width: 540px;">
           <b-row no-gutters>
             <b-col md="6">
-              <b-card-img :src="'https://pics.thomas.gg/storage/thumbnails/' + album.header + '.jpg'" class="rounded-0"></b-card-img>
+              <b-card-img-lazy :src="'https://pics.thomas.gg/storage/thumbnails/' + album.header + '.jpg'" class="rounded-0"></b-card-img-lazy>
             </b-col>
             <b-col md="6">
               <b-card-body class="d-flex flex-column h-100" :title="album.name">
