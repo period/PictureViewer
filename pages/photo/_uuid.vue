@@ -8,7 +8,7 @@
         <b-badge variant="primary" pill><fa :icon="['fas', 'list-ol']" /> UUID</b-badge> {{ photo.uuid }}
       </b-list-group-item>
       <b-list-group-item>
-        <b-badge variant="primary" pill><fa :icon="['fas', 'plane']" />Aircraft registration (Type / MSN)</b-badge> {{ photo.aircraft.registration }} ({{ photo.aircraft.type }} / {{ photo.aircraft.msn }})
+        <b-badge variant="primary" pill><fa :icon="['fas', 'plane']" />Aircraft registration (Type / MSN)</b-badge> <b-link :to="generateSearch({registration: photo.aircraft.registration})">{{ photo.aircraft.registration }}</b-link> (<b-link :to="generateSearch({type: photo.aircraft.type})">{{ photo.aircraft.type }}</b-link> / <b-link :to="generateSearch({msn: photo.aircraft.msn, type: photo.aircraft.type})">{{ photo.aircraft.msn }}</b-link>)
       </b-list-group-item>
       <b-list-group-item>
         <b-badge variant="primary" pill><fa :icon="['fas', 'camera']" /> Camera</b-badge> {{ photo.camera }}
@@ -17,7 +17,7 @@
         <b-badge variant="primary" pill><fa :icon="['fas', 'clock']" /> Date taken</b-badge> {{ $moment.unix(photo.timestamp).format("MMMM Do YYYY, HH:mm:ss") }}
       </b-list-group-item>
       <b-list-group-item>
-        <b-badge variant="primary" pill><fa :icon="['fas', 'flag']" /> Airline</b-badge> {{ photo.aircraft.airline }}
+        <b-badge variant="primary" pill><fa :icon="['fas', 'flag']" /> Airline</b-badge> <b-link :to="generateSearch({airline: photo.aircraft.airline})">{{ photo.aircraft.airline }}</b-link>
       </b-list-group-item>
     </b-list-group>
     <h5>This photo is in {{ photo.albums.length + " album" + appendSuffix(photo.albums.length) }}:</h5>
@@ -48,6 +48,9 @@ export default {
     this.getPhoto();
   },
   methods: {
+    generateSearch(searchValues) {
+      return "/search/" + btoa(JSON.stringify(searchValues));
+    },
     async getPhoto() {
       await this.$axios
         .$get("https://pics.thomas.gg/api/photo?id=" + this.$route.params.uuid, {})
