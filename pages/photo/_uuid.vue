@@ -14,7 +14,7 @@
         <b-badge variant="primary" pill><fa :icon="['fas', 'camera']" /> Camera</b-badge> {{ photo.camera }}
       </b-list-group-item>
       <b-list-group-item>
-        <b-badge variant="primary" pill><fa :icon="['fas', 'clock']" /> Date taken</b-badge> {{ $moment.unix(photo.timestamp).format("MMMM Do YYYY, HH:mm:ss") }}
+        <b-badge variant="primary" pill><fa :icon="['fas', 'clock']" /> Date taken</b-badge> {{ $moment.unix(photo.timestamp).format("MMMM Do YYYY, HH:mm:ss") }} ({{ $moment.unix(photo.timestamp).fromNow() }})
       </b-list-group-item>
       <b-list-group-item>
         <b-badge variant="primary" pill><fa :icon="['fas', 'flag']" /> Airline</b-badge> <b-link :to="generateSearch({airline: photo.aircraft.airline})">{{ photo.aircraft.airline }}</b-link>
