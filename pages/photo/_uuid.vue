@@ -8,7 +8,7 @@
         <b-badge variant="primary" pill><fa :icon="['fas', 'list-ol']" /> UUID</b-badge> {{ photo.uuid }}
       </b-list-group-item>
       <b-list-group-item>
-        <b-badge variant="primary" pill><fa :icon="['fas', 'plane']" />Aircraft registration (Type / MSN)</b-badge> <b-link :to="generateSearch({registration: photo.aircraft.registration})">{{ photo.aircraft.registration }}</b-link> (<b-link :to="generateSearch({type: photo.aircraft.type})">{{ photo.aircraft.type }}</b-link> / <b-link :to="generateSearch({msn: photo.aircraft.msn, type: photo.aircraft.type})">{{ photo.aircraft.msn }}</b-link>)
+        <b-badge variant="primary" pill><fa :icon="['fas', 'plane']" /> Aircraft registration (Type / MSN)</b-badge> <b-link :to="generateSearch({registration: photo.aircraft.registration})">{{ photo.aircraft.registration }}</b-link> (<b-link :to="generateSearch({type: photo.aircraft.type})">{{ photo.aircraft.type }}</b-link> / <b-link :to="generateSearch({msn: photo.aircraft.msn, type: photo.aircraft.type})">{{ photo.aircraft.msn }}</b-link>)
       </b-list-group-item>
       <b-list-group-item>
         <b-badge variant="primary" pill><fa :icon="['fas', 'camera']" /> Camera</b-badge> {{ photo.camera }}
