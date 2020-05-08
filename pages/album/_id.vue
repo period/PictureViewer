@@ -1,11 +1,13 @@
 <template>
   <div class="container">
     <div>
-      <b-card-group>
-          <div v-for="photo in photos" :key="photo.uuid">
-            <album-content-item :photo="photo" :id="photo.uuid"></album-content-item>
-          </div>
-      </b-card-group>
+      <b-overlay :show="!loaded">
+        <b-card-group>
+            <div v-for="photo in photos" :key="photo.uuid">
+              <album-content-item :photo="photo" :id="photo.uuid"></album-content-item>
+            </div>
+        </b-card-group>
+      </b-overlay>
     </div>
   </div>
 </template>
@@ -23,6 +25,7 @@ export default {
         .$get("https://pics.thomas.gg/api/albums/retrieve?id=" + this.$route.params.id, {})
         .then(res => {
           this.photos = res.photos;
+          this.loaded = true;
           if(this.$route.hash) {
             this.$nextTick(() => {
               document.getElementById(this.$route.hash.replace("#", "")).scrollIntoView(true);
@@ -34,7 +37,8 @@ export default {
   },
   data() {
     return {
-      photos: []
+      photos: [],
+      loaded: false
     };
   }
 };

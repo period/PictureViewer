@@ -1,11 +1,13 @@
 <template>
   <div class="container">
     <div>
-      <b-card-group>
-          <div v-for="album in albums" :key="album.id">
-            <album-item :album="album"></album-item>
-          </div>
-      </b-card-group>
+      <b-overlay :show="!loaded">
+        <b-card-group>
+            <div v-for="album in albums" :key="album.id">
+              <album-item :album="album"></album-item>
+            </div>
+        </b-card-group>
+      </b-overlay>
     </div>
   </div>
 </template>
@@ -23,12 +25,14 @@ export default {
         .$get("https://pics.thomas.gg/api/albums/list", {})
         .then(res => {
           this.albums = res.albums;
+          this.loaded = true;
         })
         .catch(res => {});
     },
   },
   data() {
     return {
+      loaded: false,
       albums: []
     };
   }
