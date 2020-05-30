@@ -51,8 +51,6 @@ export default {
       await this.$axios
         .$get("https://pics.thomas.gg/api/search/data")
         .then(res => {
-          console.log("QUERY " + res.length);
-          console.log("SELECT * FROM ? WHERE " + this.generateSQL())
           this.alasql.promise("SELECT * FROM ? WHERE " + this.generateSQL(), [res]).then(sqRes => {
             let patched = [];
             for(var i = 0; i < sqRes.length; i++) patched.push({
