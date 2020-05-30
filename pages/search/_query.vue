@@ -49,14 +49,27 @@ export default {
     },
     async getPhotos() {
       await this.$axios
-        .$post("https://pics.thomas.gg/api/search/query", {sql:this.generateSQL()})
+        .$get("https://pics.thomas.gg/api/search/data")
         .then(res => {
-          this.photos = res;
-          if(this.$route.hash) {
-            this.$nextTick(() => {
-              document.getElementById(this.$route.hash.replace("#", "")).scrollIntoView(true);
+          console.log("QUERY " + res.length);
+          console.log("SELECT * FROM ? WHERE " + this.generateSQL())
+          this.alasql.promise("SELECT * FROM ? WHERE " + this.generateSQL(), [res]).then(sqRes => {
+            let patched = [];
+            for(var i = 0; i < sqRes.length; i++) patched.push({
+              uuid: sqRes[i].uuid,
+              timestamp: sqRes[i].timestamp,
+              camera: sqRes[i].camera,
+              aircraft: {registration: sqRes[i].registration, type: sqRes[i].aircraftType, msn: sqRes[i].msn, airline: sqRes[i].airline}
             })
-          }
+            this.photos = patched;
+            if(this.$route.hash) {
+              this.$nextTick(() => {
+                document.getElementById(this.$route.hash.replace("#", "")).scrollIntoView(true);
+              })
+            }
+          }).catch(sqErr => {
+            console.log("Caught " + sqErr);
+          })
         })
         .catch(res => {});
     },
