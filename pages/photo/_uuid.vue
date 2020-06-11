@@ -9,7 +9,7 @@
           <b-badge variant="primary" pill><fa :icon="['fas', 'list-ol']" /> UUID</b-badge> {{ photo.uuid }}
         </b-list-group-item>
         <b-list-group-item>
-          <b-badge variant="primary" pill><fa :icon="['fas', 'plane']" /> Aircraft registration (Type / MSN)</b-badge> <b-link :to="generateSearch({registration: photo.aircraft.registration})">{{ photo.aircraft.registration }}</b-link> (<b-link :to="generateSearch({type: photo.aircraft.type})">{{ photo.aircraft.type }}</b-link> / <b-link :to="generateSearch({msn: photo.aircraft.msn, type: photo.aircraft.type})">{{ photo.aircraft.msn }}</b-link>)
+          <b-badge variant="primary" pill><fa :icon="['fas', 'plane']" /> Aircraft registration (Type / MSN)</b-badge> <b-link :to='generateSearch([{field: "registration", operator: "equals", value: photo.aircraft.registration}])'>{{ photo.aircraft.registration }}</b-link> (<b-link :to='generateSearch([{field: "aircraftType", operator: "equals", value: photo.aircraft.type}])'>{{ photo.aircraft.type }}</b-link> / <b-link :to='generateSearch([{field: "aircraftType", operator: "equals", value: photo.aircraft.type}, {field: "msn", operator: "equals", value: photo.aircraft.msn}])'>{{ photo.aircraft.msn }}</b-link>)
         </b-list-group-item>
         <b-list-group-item>
           <b-badge variant="primary" pill><fa :icon="['fas', 'camera']" /> Camera</b-badge> {{ photo.camera }}
@@ -18,7 +18,7 @@
           <b-badge variant="primary" pill><fa :icon="['fas', 'clock']" /> Date taken</b-badge> {{ $moment.unix(photo.timestamp).format("MMMM Do YYYY, HH:mm:ss") }} ({{ $moment.unix(photo.timestamp).fromNow() }})
         </b-list-group-item>
         <b-list-group-item>
-          <b-badge variant="primary" pill><fa :icon="['fas', 'flag']" /> Airline</b-badge> <b-link :to="generateSearch({airline: photo.aircraft.airline})">{{ photo.aircraft.airline }}</b-link>
+          <b-badge variant="primary" pill><fa :icon="['fas', 'flag']" /> Airline</b-badge> <b-link :to='generateSearch([{field: "airline", operator: "equals", value: photo.aircraft.airline}])'>{{ photo.aircraft.airline }}</b-link>
         </b-list-group-item>
       </b-list-group>
     </b-overlay>
@@ -53,7 +53,7 @@ export default {
   },
   methods: {
     generateSearch(searchValues) {
-      return "/search/" + btoa(JSON.stringify(searchValues));
+      return "/search/" + btoa(JSON.stringify([searchValues]));
     },
     async getPhoto() {
       await this.$axios
