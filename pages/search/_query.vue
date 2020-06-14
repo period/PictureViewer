@@ -51,11 +51,21 @@ export default {
       if(condition.operator == "greater_than") return condition.field + " > " + condition.value;
       return "";
     },
-    async getPhotos() {
+    getPhotos() {
+      if(sessionStorage.getItem("database") == null) this.getData();
+      else this.performQuery();
+    },
+    async getData() {
       await this.$axios
         .$get("https://pics.thomas.gg/api/search/data")
         .then(res => {
-          this.alasql.promise("SELECT * FROM ? WHERE " + this.generateSQL(), [res]).then(sqRes => {
+          sessionStorage.setItem("database", JSON.stringify(res));
+          this.performQuery();
+        })
+        .catch(res => {});
+    },
+    performQuery() {
+      this.alasql.promise("SELECT * FROM ? WHERE " + this.generateSQL(), [JSON.parse(sessionStorage.getItem("database"))]).then(sqRes => {
             let patched = [];
             for(var i = 0; i < sqRes.length; i++) patched.push({
               uuid: sqRes[i].uuid,
@@ -72,9 +82,7 @@ export default {
           }).catch(sqErr => {
             console.log("Caught " + sqErr);
           })
-        })
-        .catch(res => {});
-    },
+    }
   },
   data() {
     return {

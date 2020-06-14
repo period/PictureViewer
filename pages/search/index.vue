@@ -73,15 +73,24 @@ export default {
         })));
     },
     async getProperties() {
-      await this.$axios
-        .$get("https://pics.thomas.gg/api/search/properties", {})
-        .then(res => {
-            for(var aircraftType in res.types) this.types.push({value: aircraftType, text: aircraftType + " (" + res.types[aircraftType] + " unique aircraft)"})
-            for(var airline in res.airlines) this.airlines.push({value: airline, text: airline+ " (" + res.airlines[airline] + " unique aircraft)"})
-            this.loaded = true;
-        })
-        .catch(res => {});
-    },
+      if(sessionStorage.getItem("database-properties") == null) {
+        await this.$axios
+          .$get("https://pics.thomas.gg/api/search/properties", {})
+          .then(res => {
+              sessionStorage.setItem("database-properties", JSON.stringify(res));
+              for(var aircraftType in res.types) this.types.push({value: aircraftType, text: aircraftType + " (" + res.types[aircraftType] + " unique aircraft)"})
+              for(var airline in res.airlines) this.airlines.push({value: airline, text: airline+ " (" + res.airlines[airline] + " unique aircraft)"})
+              this.loaded = true;
+          })
+          .catch(res => {});
+      }
+      else {
+        let res = JSON.parse(sessionStorage.getItem("database-properties"));
+        for(var aircraftType in res.types) this.types.push({value: aircraftType, text: aircraftType + " (" + res.types[aircraftType] + " unique aircraft)"})
+        for(var airline in res.airlines) this.airlines.push({value: airline, text: airline+ " (" + res.airlines[airline] + " unique aircraft)"})
+        this.loaded = true;
+      }
+    }
   },
   data() {
     return {
