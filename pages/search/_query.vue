@@ -32,6 +32,10 @@ export default {
       return sql;
     },
     conditionToSQL(condition) {
+      if(condition.field == "registration" && condition.operator == "equals") {
+        console.log("Upper casing registration!");
+        condition.value = condition.value.toUpperCase();
+      }
       if(condition.operator == "equals") return condition.field + " = '" + condition.value + "'";
       if(condition.operator == "contains") return condition.field + " LIKE '%" + condition.value + "%'";
       if(condition.operator == "startsWith") return condition.field + " LIKE '" + condition.value + "%'";

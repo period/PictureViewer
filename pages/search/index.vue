@@ -26,7 +26,6 @@ export default {
   mounted() {
     this.getProperties();
     this.$nuxt.$on("condition-update", (orIndex, andIndex, field, operator, value) => {
-      console.log("Condition updated");
       this.query[orIndex][andIndex] = {field: field, operator: operator, value: value};
       this.generateSQL();
       this.$forceUpdate();
