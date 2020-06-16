@@ -7,9 +7,9 @@
 
     <b-collapse id="nav-collapse" is-nav>
       <b-navbar-nav>
-          <b-nav-item to="/albums">Albums</b-nav-item>
-          <b-nav-item to="/collections">Collections</b-nav-item>
-          <b-nav-item to="/info">Info</b-nav-item>
+          <b-nav-item to="/albums" :active="$nuxt.$route.name == 'albums'">Albums</b-nav-item>
+          <b-nav-item to="/collections" :active="$nuxt.$route.name == 'collections'">Collections</b-nav-item>
+          <b-nav-item to="/info" :active="$nuxt.$route.name == 'info'">Info</b-nav-item>
       </b-navbar-nav>
 
       <b-navbar-nav class="ml-auto">
