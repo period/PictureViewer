@@ -2,7 +2,7 @@
   <div class="container">
     <h1>Photo of {{ photo.aircraft.registration }}</h1>
     <b-button v-if="photo.relative.previous != null" variant="primary" pill class="float-left" :to="'/photo/' + photo.relative.previous"><fa :icon="['fas', 'chevron-left']" /> Last Photo</b-button>
-    <b-button  v-if="photo.relative.next != null"variant="primary" pill class="float-right" :to="'/photo/' + photo.relative.next"><fa :icon="['fas', 'chevron-right']" /> Next Photo</b-button>
+    <b-button  v-if="photo.relative.next != null" variant="primary" pill class="float-right" :to="'/photo/' + photo.relative.next"><fa :icon="['fas', 'chevron-right']" /> Next Photo</b-button>
     <b-img :src="'https://pics.thomas.gg/storage/full/' + this.$route.params.uuid + '.jpg'" fluid></b-img>
     <h5>Metadata</h5>
     <b-overlay :show="!loaded">
