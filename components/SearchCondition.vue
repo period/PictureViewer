@@ -47,6 +47,7 @@ export default {
   },
   methods: {
       update() {
+        if(this.selectedField == "registration" && this.selectedOperator == null && this.selectedValue == null) this.selectedOperator = "equals";
         if(this.selectedField == "timestamp" && this.selectedValue != null) {
             let tmpDate = new Date(this.selectedValue);
             $nuxt.$emit("condition-update", this.valueProps.orIndex, this.valueProps.andIndex, this.selectedField, this.selectedOperator, tmpDate.getTime() / 1000);
