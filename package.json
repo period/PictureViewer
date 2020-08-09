@@ -16,6 +16,7 @@
     "@nuxtjs/moment": "^1.6.0",
     "alasql": "^0.6.1",
     "bootstrap-vue": "^2.13.0",
+    "exif-js": "^2.3.0",
     "nuxt": "^2.0.0",
     "nuxt-fontawesome": "^0.4.0",
     "vue-country-flag": "^2.0.1"

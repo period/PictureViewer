@@ -14,7 +14,7 @@
           <b-badge variant="primary" pill><fa :icon="['fas', 'plane']" /> Aircraft registration (Type / MSN)</b-badge> <b-link :to='generateSearch([{field: "registration", operator: "equals", value: photo.aircraft.registration}])'>{{ photo.aircraft.registration }}</b-link> (<b-link :to='generateSearch([{field: "aircraftType", operator: "equals", value: photo.aircraft.type}])'>{{ photo.aircraft.type }}</b-link> / <b-link :to='generateSearch([{field: "aircraftType", operator: "equals", value: photo.aircraft.type}, {field: "msn", operator: "equals", value: photo.aircraft.msn}])'>{{ photo.aircraft.msn }}</b-link>)
         </b-list-group-item>
         <b-list-group-item>
-          <b-badge variant="primary" pill><fa :icon="['fas', 'camera']" /> Camera</b-badge> {{ photo.camera }}
+          <b-badge variant="primary" pill><fa :icon="['fas', 'camera']" /> Camera</b-badge> {{ photo.camera }} ({{ exif.iso }} ISO, 1/{{ exif.shutter }}s, f/{{ exif.aperture }}, {{ exif.focalLength }}mm 35mm equiv.)
         </b-list-group-item>
         <b-list-group-item>
           <b-badge variant="primary" pill><fa :icon="['fas', 'clock']" /> Date taken</b-badge> {{ $moment.unix(photo.timestamp).format("MMMM Do YYYY, HH:mm:ss") }} ({{ $moment.unix(photo.timestamp).fromNow() }})
@@ -31,7 +31,7 @@
           <b-card no-body class="overflow-hidden" style="max-width: 540px;">
             <b-row no-gutters>
               <b-col md="6">
-                <b-card-img-lazy :src="'https://pics.thomas.gg/storage/thumbnails/' + album.header + '.jpg'" class="rounded-0"></b-card-img-lazy>
+                <b-card-img :src="'https://pics.thomas.gg/storage/thumbnails/' + album.header + '.jpg'" class="rounded-0" @load="imageLoaded()" id="photo"></b-card-img>
               </b-col>
               <b-col md="6">
                 <b-card-body class="d-flex flex-column h-100" :title="album.name">
@@ -47,6 +47,7 @@
 </template>
 <script>
 import CountryFlag from 'vue-country-flag'
+import EXIF from 'exif-js'
 export default {
   name: "Photo",
   components: { CountryFlag },
@@ -56,6 +57,19 @@ export default {
   methods: {
     generateSearch(searchValues) {
       return "/search/" + btoa(JSON.stringify([searchValues]));
+    },
+    async imageLoaded() {
+      if(document.getElementById("photo") == null) return;
+      let exifData = await new Promise(resolve =>
+        EXIF.getData(document.getElementById("photo"), function() {
+          resolve(EXIF.getAllTags(this)); 
+        }
+      ));
+      let crop = 1;
+      console.log(exifData);
+      if(exifData.Model == "Canon PowerShot SX70 HS") crop = 5.22;
+      else if(exifData.Model == "CLT-L09") crop = 4.5;
+      this.exif = {iso: exifData.ISOSpeedRatings, shutter: exifData.ExposureTime.denominator, aperture: exifData.FNumber, focalLength: (exifData.FocalLength * crop).toFixed(1)}
     },
     async getPhoto() {
       await this.$axios
@@ -74,6 +88,7 @@ export default {
   data() {
     return {
       photo: {aircraft: {}, albums: [], relative: {}},
+      exif: {shutter: 0, aperture: 0, focalLength: 0},
       loaded: false
     };
   }
