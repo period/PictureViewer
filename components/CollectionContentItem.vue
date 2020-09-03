@@ -8,7 +8,7 @@
     <b-card-text>
     </b-card-text>
     <template v-slot:footer>
-      <small class="text-muted">Taken at {{ time }}</small>
+      <small class="text-muted">Taken using {{ item.camera }} at {{ time }}</small>
         <b-button class="float-right" variant="primary" :to="'/photo/' + item.photo">More</b-button>
     </template>
   </b-card>
