@@ -1,6 +1,6 @@
 <template>
   <b-card>
-    <b-card-title>{{ item.registration }} <b-badge variant="warning" v-if="item.state == 'NEEDS_RETAKE'" style="max-height: 1.5rem;">Needs Retake</b-badge></b-card-title>
+    <b-card-title>{{ item.registration }} <b-badge variant="info" v-if="item.state == 'NEEDS_RETAKE'" style="max-height: 1.5rem;">Needs Retake</b-badge></b-card-title>
     <b-card-img-lazy
       :src="'https://pics.thomas.gg/storage/thumbnails/' + item.photo + '.jpg'"
       top
@@ -8,7 +8,7 @@
     <b-card-text>
     </b-card-text>
     <template v-slot:footer>
-      <small class="text-muted">Taken using {{ item.camera }} at {{ time }}</small>
+      <small class="text-muted">Taken {{ time }} using {{ item.camera }}</small>
         <b-button class="float-right" variant="primary" :to="'/photo/' + item.photo">More</b-button>
     </template>
   </b-card>
