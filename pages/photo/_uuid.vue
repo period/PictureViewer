@@ -3,35 +3,55 @@
     <h1>Photo of {{ photo.aircraft.registration }}</h1>
     <b-button v-if="photo.relative.previous != null" variant="primary" pill class="float-left" :to="'/photo/' + photo.relative.previous"><fa :icon="['fas', 'chevron-left']" /> Last Photo</b-button>
     <b-button  v-if="photo.relative.next != null" variant="primary" pill class="float-right" :to="'/photo/' + photo.relative.next"><fa :icon="['fas', 'chevron-right']" /> Next Photo</b-button>
-    <b-img :src="'https://pics.thomas.gg/storage/full/' + this.$route.params.uuid + '.jpg'" fluid></b-img>
-    <h5>Metadata</h5>
+    <b-img :src="'https://pics.thomas.gg/storage/full/' + this.$route.params.uuid + '.jpg'" fluid id="photo" @load="imageLoaded()"></b-img>
+    <h3>Metadata</h3>
     <b-overlay :show="!loaded">
-      <b-list-group>
-        <b-list-group-item>
-          <b-badge variant="primary" pill><fa :icon="['fas', 'list-ol']" /> UUID</b-badge> {{ photo.uuid }}
-        </b-list-group-item>
-        <b-list-group-item>
-          <b-badge variant="primary" pill><fa :icon="['fas', 'plane']" /> Aircraft registration (Type / MSN)</b-badge> <b-link :to='generateSearch([{field: "registration", operator: "equals", value: photo.aircraft.registration}])'>{{ photo.aircraft.registration }}</b-link> (<b-link :to='generateSearch([{field: "aircraftType", operator: "equals", value: photo.aircraft.type}])'>{{ photo.aircraft.type }}</b-link> / <b-link :to='generateSearch([{field: "aircraftType", operator: "equals", value: photo.aircraft.type}, {field: "msn", operator: "equals", value: photo.aircraft.msn}])'>{{ photo.aircraft.msn }}</b-link>)
-        </b-list-group-item>
-        <b-list-group-item>
-          <b-badge variant="primary" pill><fa :icon="['fas', 'camera']" /> Camera</b-badge> {{ photo.camera }} ({{ exif.iso }} ISO, 1/{{ exif.shutter }}s, f/{{ exif.aperture }}, {{ exif.focalLength }}mm 35mm equiv.)
-        </b-list-group-item>
-        <b-list-group-item>
-          <b-badge variant="primary" pill><fa :icon="['fas', 'clock']" /> Date taken</b-badge> {{ $moment.unix(photo.timestamp).format("MMMM Do YYYY, HH:mm:ss") }} ({{ $moment.unix(photo.timestamp).fromNow() }})
-        </b-list-group-item>
-        <b-list-group-item>
-          <b-badge variant="primary" pill><fa :icon="['fas', 'flag']" /> Airline</b-badge> <b-link :to='generateSearch([{field: "airline", operator: "equals", value: photo.aircraft.airline}])'>{{ photo.aircraft.airline }}</b-link>
-        </b-list-group-item>
-      </b-list-group>
+      <b-row>
+        <b-col md="4">
+          <h5>UUID</h5>
+          <hr>
+          {{photo.uuid}}
+        </b-col>
+        <b-col md="4">
+          <h5>Date taken</h5>
+          <hr>
+          {{ $moment.unix(photo.timestamp).format("MMMM Do YYYY, HH:mm:ss") }} ({{ $moment.unix(photo.timestamp).fromNow() }})
+        </b-col>
+      </b-row>
+      <b-row class="mt-3">
+        <b-col md="4">
+          <h5>Aircraft</h5>
+          <hr>
+          Registration: <b-link :to='generateSearch([{field: "registration", operator: "equals", value: photo.aircraft.registration}])'>{{ photo.aircraft.registration }}</b-link>
+          <br>Type: <b-link :to='generateSearch([{field: "aircraftType", operator: "equals", value: photo.aircraft.type}])'>{{ photo.aircraft.type }}</b-link>
+          <br>MSN: <b-link :to='generateSearch([{field: "aircraftType", operator: "equals", value: photo.aircraft.type}, {field: "msn", operator: "equals", value: photo.aircraft.msn}])'>{{ photo.aircraft.msn }}</b-link>
+          <br>Airline: <b-link :to='generateSearch([{field: "airline", operator: "equals", value: photo.aircraft.airline}])'>{{ photo.aircraft.airline }}</b-link>
+        </b-col>
+        <b-col md="4">
+          <h5>Camera</h5>
+          <hr>
+          Camera: <b-link :to='generateSearch([{field: "camera", operator: "equals", value: photo.camera}])'>{{ photo.camera }}</b-link>
+          <br>ISO: {{ exif.iso }}
+          <br>Shutter speed: 1/{{ exif.shutter }}s
+          <br>Aperture: f/{{ exif.aperture }}
+        </b-col>
+        <b-col md="4">
+          <h5>Lens</h5>
+          <hr>
+          Focal length: {{ exif.focalLength }}mm 35mm equiv.
+          <br>Lens: {{ exif.lens }}
+        </b-col>
+      </b-row>
     </b-overlay>
+    <hr>
     <b-overlay :show="!loaded">
-      <h5>This photo is in {{ photo.albums.length + " album" + appendSuffix(photo.albums.length) }}:</h5>
+      <h4>This photo is in {{ photo.albums.length + " album" + appendSuffix(photo.albums.length) }}:</h4>
       <b-card-group deck>
         <div v-for="album in photo.albums">
           <b-card no-body class="overflow-hidden" style="max-width: 540px;">
             <b-row no-gutters>
               <b-col md="6">
-                <b-card-img :src="'https://pics.thomas.gg/storage/thumbnails/' + album.header + '.jpg'" class="rounded-0" @load="imageLoaded()" id="photo"></b-card-img>
+                <b-card-img :src="'https://pics.thomas.gg/storage/thumbnails/' + album.header + '.jpg'" class="rounded-0"></b-card-img>
               </b-col>
               <b-col md="6">
                 <b-card-body class="d-flex flex-column h-100" :title="album.name">
@@ -69,7 +89,8 @@ export default {
       console.log(exifData);
       if(exifData.Model == "Canon PowerShot SX70 HS") crop = 5.22;
       else if(exifData.Model == "CLT-L09") crop = 4.5;
-      this.exif = {iso: exifData.ISOSpeedRatings, shutter: exifData.ExposureTime.denominator, aperture: exifData.FNumber, focalLength: (exifData.FocalLength * crop).toFixed(1)}
+      this.exif = {iso: exifData.ISOSpeedRatings, shutter: exifData.ExposureTime.denominator, aperture: exifData.FNumber, focalLength: (exifData.FocalLength * crop).toFixed(1), lens: "(unknown)"};
+      if(exifData.Model == "NIKON Z 7") this.exif.lens = exifData.undefined;
     },
     async getPhoto() {
       await this.$axios
