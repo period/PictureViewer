@@ -3,8 +3,8 @@
     <h1>Photo of {{ photo.aircraft.registration }}</h1>
     <b-button v-if="photo.relative.previous != null" variant="primary" pill class="float-left" :to="'/photo/' + photo.relative.previous"><fa :icon="['fas', 'chevron-left']" /> Last Photo</b-button>
     <b-button  v-if="photo.relative.next != null" variant="primary" pill class="float-right" :to="'/photo/' + photo.relative.next"><fa :icon="['fas', 'chevron-right']" /> Next Photo</b-button>
-    <b-img :src="'https://pics.thomas.gg/storage/full/' + this.$route.params.uuid + '.jpg'" fluid id="photo" @load="imageLoaded()"></b-img>
-    <h3>Metadata</h3>
+    <b-img :src="'https://pics.thomas.gg/storage/full/' + this.$route.params.uuid + '.jpg'" fluid id="photo" class="mt-2" @load="imageLoaded()"></b-img>
+    <h3 class="mt-2">Metadata</h3>
     <b-overlay :show="!loaded">
       <b-row>
         <b-col md="4">
@@ -44,7 +44,7 @@
       </b-row>
     </b-overlay>
     <hr>
-    <b-overlay :show="!loaded">
+    <b-overlay :show="!loaded" class="mb-2">
       <h4>This photo is in {{ photo.albums.length + " album" + appendSuffix(photo.albums.length) }}:</h4>
       <b-card-group deck>
         <div v-for="album in photo.albums">
