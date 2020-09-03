@@ -1,6 +1,6 @@
 <template>
   <b-card>
-    <b-card-title>{{ item.registration }} <b-badge variant="warning" v-if="item.state == 'NEEDS_RETAKE'">Needs Retake</b-badge></b-card-title>
+    <b-card-title>{{ item.registration }} <b-badge variant="warning" v-if="item.state == 'NEEDS_RETAKE'" style="max-height: 1.5rem;">Needs Retake</b-badge></b-card-title>
     <b-card-img-lazy
       :src="'https://pics.thomas.gg/storage/thumbnails/' + item.photo + '.jpg'"
       top
