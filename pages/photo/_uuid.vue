@@ -8,19 +8,19 @@
     <b-overlay :show="!loaded">
       <b-row>
         <b-col md="4">
-          <h5>UUID</h5>
+          <h5><fa :icon="['fas', 'list-ol']" /> UUID</h5>
           <hr>
           {{photo.uuid}}
         </b-col>
         <b-col md="4">
-          <h5>Date taken</h5>
+          <h5><fa :icon="['fas', 'clock']" /> Date taken</h5>
           <hr>
           {{ $moment.unix(photo.timestamp).format("MMMM Do YYYY, HH:mm:ss") }} ({{ $moment.unix(photo.timestamp).fromNow() }})
         </b-col>
       </b-row>
       <b-row class="mt-3">
         <b-col md="4">
-          <h5>Aircraft</h5>
+          <h5><fa :icon="['fas', 'plane']" /> Aircraft</h5>
           <hr>
           Registration: <b-link :to='generateSearch([{field: "registration", operator: "equals", value: photo.aircraft.registration}])'>{{ photo.aircraft.registration }}</b-link>
           <br>Type: <b-link :to='generateSearch([{field: "aircraftType", operator: "equals", value: photo.aircraft.type}])'>{{ photo.aircraft.type }}</b-link>
@@ -28,7 +28,7 @@
           <br>Airline: <b-link :to='generateSearch([{field: "airline", operator: "equals", value: photo.aircraft.airline}])'>{{ photo.aircraft.airline }}</b-link>
         </b-col>
         <b-col md="4">
-          <h5>Camera</h5>
+          <h5><fa :icon="['fas', 'camera']" /> Camera</h5>
           <hr>
           Camera: <b-link :to='generateSearch([{field: "camera", operator: "equals", value: photo.camera}])'>{{ photo.camera }}</b-link>
           <br>ISO: {{ exif.iso }}
@@ -36,9 +36,9 @@
           <br>Aperture: f/{{ exif.aperture }}
         </b-col>
         <b-col md="4">
-          <h5>Lens</h5>
+          <h5><fa :icon="['fas', 'search-plus']" /> Lens</h5>
           <hr>
-          Focal length: {{ exif.focalLength }}mm 35mm equiv.
+          Focal length: {{ exif.focalLength }}mm (35mm equiv.)
           <br>Lens: {{ exif.lens }}
         </b-col>
       </b-row>
