@@ -10,11 +10,18 @@
               <collection-content-item :item="item"></collection-content-item>
             </div>
         </b-card-group>
-        <h3>Missing:</h3>
-        <div v-if="missing.length == 0"><p>None! :)</p></div>
-        <div v-if="missing.length != 0">
-          <div v-for="aircraft in missing" :key="aircraft.registration">
-            {{ aircraft.registration }} <b-badge v-if="aircraft.state == 'NOT_PHOTOGRAPHED'" variant="warning">Not Photographed</b-badge><b-badge v-if="aircraft.state == 'IMPOSSIBLE'" variant="danger">Impossible to photograph</b-badge>
+        <h3>Missing/Needs retake:</h3>
+        <div v-if="missingAirlines.length == 0"><p>None! :)</p></div>
+        <div v-if="missingAirlines.length != 0">
+          <div v-for="airline in missingAirlines" :key="airline.icao">
+            <b-card :title="missing[airline].name">
+              <b-row>
+                <b-col sm=2 v-for="aircraft in missing[airline].aircraft" :key="aircraft.registration">
+                  <p class="text-warning" v-if="aircraft.state == 'NOT_PHOTOGRAPHED'">{{ aircraft.registration }}</p>
+                  <p class="text-info" v-if="aircraft.state == 'NEEDS_RETAKE'">{{ aircraft.registration }}</p>
+                </b-col>
+              </b-row>
+            </b-card>
           </div>
         </div>
       </b-overlay>
@@ -37,7 +44,8 @@ export default {
         .then(res => {
           this.collection = res;
           this.photos = res.aircraft.filter(aircraft => aircraft.photo!=null)
-          this.missing = res.aircraft.filter(aircraft => aircraft.photo == null);
+          this.missing = res.missing;
+          this.missingAirlines = Object.keys(res.missing)
           this.items = res.aircraft;
           this.loaded = true;
           if(this.$route.hash) {
@@ -55,6 +63,7 @@ export default {
       items: [],
       photos: [],
       missing: [],
+      missingAirlines: [],
       loaded: false
     };
   }
