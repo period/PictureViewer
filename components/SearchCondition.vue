@@ -3,7 +3,7 @@
         <b-col md="2"><b-form-select v-model="selectedField" :options="fields" @input="update()"></b-form-select></b-col>
         <b-col md="2"><b-form-select v-model="selectedOperator" :options="getOperators()" :disabled="selectedField == null" @input="update()"></b-form-select></b-col>
         <b-col md="6" v-if="getValueDropdownOptions().length > 0"><b-form-select v-model="selectedValue" :options="getValueDropdownOptions()" :disabled="selectedOperator == null" @input="update()"></b-form-select></b-col>
-        <b-col md="6" v-if="getValueDropdownOptions().length == 0 && this.selectedField != 'timestamp'"><b-form-input v-model="selectedValue" placeholder="Enter a value" :disabled="selectedOperator == null" @input="update()"></b-form-input></b-col>
+        <b-col md="6" v-if="getValueDropdownOptions().length == 0 && this.selectedField != 'timestamp' && (this.selectedField == 'caption' && this.selectedOperator != null && this.selectedOperator.endsWith('null')) == false"><b-form-input v-model="selectedValue" placeholder="Enter a value" :disabled="selectedOperator == null" @input="update()"></b-form-input></b-col>
         <b-col md="6" v-if="this.selectedField == 'timestamp'"><b-form-datepicker v-model="selectedValue" start-weekday="1" class="mb-2" @input="update()"></b-form-datepicker></b-col>
         <b-col md="1"><b-button variant="secondary" class="w-100" @click="and()">And</b-button></b-col>
         <b-col md="1" v-if="displayOr"><b-button variant="secondary" class="w-100" @click="or()">Or</b-button></b-col>
@@ -34,7 +34,7 @@ export default {
   },
   data() {
     return {
-        fields: [{value: null, text: "Select field..."}, {value: "registration", text: "Aircraft registration"}, {value: "timestamp", text: "Date taken"}, {value: "aircraftType", text: "Aircraft type"}, {value: "msn", text: "Manufacturer's serial number (MSN)"}, {value: "airline", text: "Airline"}, {value: "camera", text: "Camera"}],
+        fields: [{value: null, text: "Select field..."}, {value: "registration", text: "Aircraft registration"}, {value: "timestamp", text: "Date taken"}, {value: "aircraftType", text: "Aircraft type"}, {value: "msn", text: "Manufacturer's serial number (MSN)"}, {value: "airline", text: "Airline"}, {value: "camera", text: "Camera"}, {value: "caption", text: "Caption"}],
         selectedField: null,
         selectedOperator: null,
         selectedValue: null,
@@ -48,6 +48,7 @@ export default {
   methods: {
       update() {
         if(this.selectedField == "registration" && this.selectedOperator == null && this.selectedValue == null) this.selectedOperator = "equals";
+        if(this.selectedField == "caption" && this.selectedOperator != null && this.selectedOperator.endsWith("null")) this.selectedValue = " ";
         if(this.selectedField == "timestamp" && this.selectedValue != null) {
             let tmpDate = new Date(this.selectedValue);
             $nuxt.$emit("condition-update", this.valueProps.orIndex, this.valueProps.andIndex, this.selectedField, this.selectedOperator, tmpDate.getTime() / 1000);
@@ -61,9 +62,10 @@ export default {
         $nuxt.$emit("search-addor", this.valueProps.orIndex, this.valueProps.andIndex);
       },
       getOperators() {
-          if(this.selectedField == null) return [{value: null, text: "Select operator..."}];
-          if(this.selectedField != "timestamp") return [{value: null, text: "Select operator..."}, {value: "equals", text: "equals"}, {value: "contains", text: "contains"}, {value: "startsWith", text: "starts with"}, {value: "endsWith", text: "ends with"}, {value: "matches", text: "matches pattern"}, {value: "not_equals", text: "doesn't equal"}, {value: "not_contains", text: "doesn't contain"}, {value: "not_startsWith", text: "doesn't start with"}, {value: "not_endsWith", text: "doesn't end with"}, {value: "not_matches", text: "doesn't match pattern"}]
-          if(this.selectedField == "timestamp") return [{value: null, text: "Select operator..."}, {value: "on", text: "on"}, {value: "less_than", text: "before"}, {value: "greater_than", text: "after"}];
+        if(this.selectedField == null) return [{value: null, text: "Select operator..."}];
+        if(this.selectedField == "timestamp") return [{value: null, text: "Select operator..."}, {value: "on", text: "on"}, {value: "less_than", text: "before"}, {value: "greater_than", text: "after"}];
+        if(this.selectedField == "caption") return [{value: null, text: "Select operator..."}, {value: "equals", text: "equals"}, {value: "contains", text: "contains"}, {value: "startsWith", text: "starts with"}, {value: "endsWith", text: "ends with"}, {value: "matches", text: "matches pattern"}, {value: "not_equals", text: "doesn't equal"}, {value: "not_contains", text: "doesn't contain"}, {value: "not_startsWith", text: "doesn't start with"}, {value: "not_endsWith", text: "doesn't end with"}, {value: "not_matches", text: "doesn't match pattern"}, {value: "is_null", text: "has no caption"}, {value: "is_not_null", text: "has caption"}]
+        else return [{value: null, text: "Select operator..."}, {value: "equals", text: "equals"}, {value: "contains", text: "contains"}, {value: "startsWith", text: "starts with"}, {value: "endsWith", text: "ends with"}, {value: "matches", text: "matches pattern"}, {value: "not_equals", text: "doesn't equal"}, {value: "not_contains", text: "doesn't contain"}, {value: "not_startsWith", text: "doesn't start with"}, {value: "not_endsWith", text: "doesn't end with"}, {value: "not_matches", text: "doesn't match pattern"}]
       },
       getValueDropdownOptions() {
           if(this.selectedField == null) return [];

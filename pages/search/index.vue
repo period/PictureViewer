@@ -65,6 +65,8 @@ export default {
       if(condition.operator == "on") return "(" + condition.field + " >= " + condition.value + " AND " + condition.field + " < " + (condition.value + 86400) + ")";
       if(condition.operator == "less_than") return condition.field + " < " + condition.value;
       if(condition.operator == "greater_than") return condition.field + " > " + condition.value;
+      if(condition.operator == "is_null") return condition.field + " IS NULL";
+      if(condition.operator == "is_not_null") return condition.field + " IS NOT NULL";
       return "";
     },
     search() {

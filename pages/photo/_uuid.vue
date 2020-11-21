@@ -17,6 +17,11 @@
           <hr>
           {{ $moment.unix(photo.timestamp).format("MMMM Do YYYY, HH:mm:ss") }} ({{ $moment.unix(photo.timestamp).fromNow() }})
         </b-col>
+        <b-col md="4" v-if="photo.caption != null">
+          <h5><fa :icon="['fas', 'pencil-alt']" /> Caption</h5>
+          <hr>
+          <div v-html="this.$parseCaption(photo.caption)"></div>
+        </b-col>
       </b-row>
       <b-row class="mt-3">
         <b-col md="4">

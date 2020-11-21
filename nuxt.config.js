@@ -27,7 +27,8 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    "~/plugins/alasql.js"
+    "~/plugins/alasql.js",
+    "~/plugins/caption_parser.js"
   ],
   /*
   ** Nuxt.js dev-modules
