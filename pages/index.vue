@@ -14,6 +14,7 @@
         v-model="slide"
         controls
         indicators
+        fade
       >
         <b-carousel-slide
           v-for="photo in featured"
