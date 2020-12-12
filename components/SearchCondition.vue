@@ -2,11 +2,12 @@
     <b-form-row>
         <b-col md="2"><b-form-select v-model="selectedField" :options="fields" @input="update()"></b-form-select></b-col>
         <b-col md="2"><b-form-select v-model="selectedOperator" :options="getOperators()" :disabled="selectedField == null" @input="update()"></b-form-select></b-col>
-        <b-col md="6" v-if="getValueDropdownOptions().length > 0"><b-form-select v-model="selectedValue" :options="getValueDropdownOptions()" :disabled="selectedOperator == null" @input="update()"></b-form-select></b-col>
-        <b-col md="6" v-if="getValueDropdownOptions().length == 0 && this.selectedField != 'timestamp' && (this.selectedField == 'caption' && this.selectedOperator != null && this.selectedOperator.endsWith('null')) == false"><b-form-input v-model="selectedValue" placeholder="Enter a value" :disabled="selectedOperator == null" @input="update()"></b-form-input></b-col>
-        <b-col md="6" v-if="this.selectedField == 'timestamp'"><b-form-datepicker v-model="selectedValue" start-weekday="1" class="mb-2" @input="update()"></b-form-datepicker></b-col>
-        <b-col md="1"><b-button variant="secondary" class="w-100" @click="and()">And</b-button></b-col>
-        <b-col md="1" v-if="displayOr"><b-button variant="secondary" class="w-100" @click="or()">Or</b-button></b-col>
+        <b-col md="5" v-if="getValueDropdownOptions().length > 0"><b-form-select v-model="selectedValue" :options="getValueDropdownOptions()" :disabled="selectedOperator == null" @input="update()"></b-form-select></b-col>
+        <b-col md="5" v-if="getValueDropdownOptions().length == 0 && this.selectedField != 'timestamp' && (this.selectedField == 'caption' && this.selectedOperator != null && this.selectedOperator.endsWith('null')) == false"><b-form-input v-model="selectedValue" placeholder="Enter a value" :disabled="selectedOperator == null" @input="update()"></b-form-input></b-col>
+        <b-col md="5" v-if="this.selectedField == 'timestamp'"><b-form-datepicker v-model="selectedValue" start-weekday="1" class="mb-2" @input="update()"></b-form-datepicker></b-col>
+        <b-col md="1"><b-button variant="secondary" class="w-100" @click="and()">and</b-button></b-col>
+        <b-col md="1"><b-button v-if="displayOr" variant="secondary" class="w-100" @click="or()">or</b-button></b-col>
+        <b-col md="1"><b-button variant="danger" class="w-100" @click="remove()"><fa :icon="['fas', 'trash']" /></b-button></b-col>
     </b-form-row>
 </template>
 <script>
@@ -30,7 +31,7 @@ export default {
     displayOr: {
         type: Boolean,
         default: true
-    },
+    }
   },
   data() {
     return {
@@ -60,6 +61,9 @@ export default {
       },
       or() {
         $nuxt.$emit("search-addor", this.valueProps.orIndex, this.valueProps.andIndex);
+      },
+      remove() {
+        $nuxt.$emit("search-remove", this.valueProps.orIndex, this.valueProps.andIndex);
       },
       getOperators() {
         if(this.selectedField == null) return [{value: null, text: "Select operator..."}];

@@ -1,14 +1,16 @@
 <template>
   <div class="container">
     <h1>Search</h1>
-    <b-overlay :show="!loaded">
-        <div v-for="(ors, orIndex) in query" :key="orIndex">
+    <b-overlay :show="!loaded" :key="deletionKey">
+        <div v-for="(ors, orIndex) in query" :key="'or_' + orIndex">
           <b-card class="text-center">
-          <div v-for="(and, andIndex) in ors" :key="andIndex">
-            <search-condition :valueProps="{types: types, airlines: airlines, andIndex: andIndex, orIndex: orIndex}" :field="and.field" :operator="and.operator" :value="and.value" :displayOr="!(orIndex < query.length-1) && !(andIndex < query[orIndex].length-1)"></search-condition>
+          <div v-for="(and, andIndex) in ors" :key="'and_' + andIndex">
+            <search-condition class="mb-1" :valueProps="{types: types, airlines: airlines, andIndex: andIndex, orIndex: orIndex}" :field="and.field" :operator="and.operator" :value="and.value" :displayOr="!(orIndex < query.length-1) && !(andIndex < query[orIndex].length-1)" />
           </div>
           </b-card>
-          <p v-if="orIndex < query.length-1">OR</p>
+          <div v-if="orIndex < query.length-1" class="text-center separator">
+            <b>or</b>
+          </div>
         </div>
     </b-overlay>
     <br>
@@ -16,6 +18,13 @@
     <br><br>
     <p><strong>Generated query: </strong> {{ this.query }}</p>
     <p><strong>Generated SQL: </strong> {{ this.sql }}</p>
+    <style scoped>
+      .separator:before, .separator:after {
+          content:'\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0';
+          text-decoration: line-through;
+          margin: auto 1em;
+      }
+    </style>
   </div>
 </template>
 <script>
@@ -37,6 +46,24 @@ export default {
     this.$nuxt.$on("search-addor", (orIndex, andIndex) => {
       this.query.push([{field: null, operator: null, value: null}]);
       this.generateSQL();
+    });
+    this.$nuxt.$on("search-remove", (orIndex, andIndex) => {
+      console.log("Remove " + andIndex + " from " + orIndex);
+      console.log(this.query[orIndex][andIndex]);
+      if(this.query.length == 1 && this.query[orIndex].length == 1) { // deleting last remaining condition, so null it
+        console.log("Last remaining condition deletion");
+        this.query = [[{field: null, operator: null, value: null}]];
+      }
+      else {
+        this.query[orIndex].splice(andIndex, 1);
+        if(this.query[orIndex].length == 0) {
+          console.log("Removing or index " + orIndex);
+          this.query.splice(orIndex, 1); // purge OR block as empty
+        }
+      }
+      this.generateSQL();
+      this.$forceUpdate();
+      this.deletionKey++;
     });
   },
   methods: {
@@ -96,6 +123,7 @@ export default {
   },
   data() {
     return {
+        deletionKey: 0,
         loaded: false,
         query: [[{field: null, operator: null, value: null}]],
         types: [{value: null, text: "Select an aircraft type"}],
