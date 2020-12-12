@@ -14,6 +14,13 @@
         </div>
     </b-overlay>
     <br>
+    <strong>Sort by</strong>
+    <b-form-row>
+      <b-col md="3"><b-form-select @input="generateSQL()" v-model="sort_key" :options="[{text: 'Timestamp', value: 'timestamp'}, {text: 'MSN', value: 'msn'}, {text: 'Aircraft registration', value: 'registration'}]"></b-form-select></b-col>
+      <b-col md="2"><b-form-select @input="generateSQL()" v-model="sort_order" :options="[{text: 'Descending', value: 'DESC'}, {text: 'Ascending', value: 'ASC'}]"></b-form-select></b-col>
+
+    </b-form-row>
+    <br>
     <b-button variant="primary" @click="search()">Search</b-button>
     <br><br>
     <p><strong>Generated query: </strong> {{ this.query }}</p>
@@ -77,6 +84,7 @@ export default {
         }
       }
       this.sql += ")"
+      this.sql += " ORDER BY " + this.sort_key + " " + this.sort_order;
     },
     conditionToSQL(condition) {
       if(condition.operator == "equals") return condition.field + " = '" + condition.value + "'";
@@ -97,6 +105,7 @@ export default {
       return "";
     },
     search() {
+      this.query.push({is_sort: true, key: this.sort_key, order: this.sort_order})
         this.$router.push("/search/" + btoa(JSON.stringify(this.query, (key, value) => {
             if(value != null) return value;
         })));
@@ -125,6 +134,8 @@ export default {
     return {
         deletionKey: 0,
         loaded: false,
+        sort_key: "timestamp",
+        sort_order: "DESC",
         query: [[{field: null, operator: null, value: null}]],
         types: [{value: null, text: "Select an aircraft type"}],
         airlines: [{value: null, text: "Select an airline callsign"}],

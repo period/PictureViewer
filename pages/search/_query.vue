@@ -16,6 +16,11 @@ export default {
   components: { AlbumContentItem },
   mounted() {
     this.query = JSON.parse(atob(this.$route.params.query))
+    if(this.query[this.query.length-1].hasOwnProperty("is_sort") && this.query[this.query.length-1].is_sort == true) {
+      this.sort_key = this.query[this.query.length-1].key;
+      this.sort_order = this.query[this.query.length-1].order;
+      this.query.splice(this.query.length-1,1);
+    }
     this.getPhotos();
   },
   methods: {
@@ -29,6 +34,7 @@ export default {
         }
       }
       sql += ")"
+      sql += " ORDER BY " + this.sort_key + " " + this.sort_order;
       return sql;
     },
     conditionToSQL(condition) {
@@ -67,6 +73,7 @@ export default {
         .catch(res => {});
     },
     performQuery() {
+
       this.alasql.promise("SELECT * FROM ? WHERE " + this.generateSQL(), [JSON.parse(sessionStorage.getItem("database"))]).then(sqRes => {
             let patched = [];
             for(var i = 0; i < sqRes.length; i++) patched.push({
@@ -89,7 +96,9 @@ export default {
   data() {
     return {
       photos: [],
-      query: []
+      query: [],
+      sort_key: "timestamp",
+      sort_order: "DESC",
     };
   }
 };
