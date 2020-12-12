@@ -111,6 +111,7 @@ export default {
               aircraft: {registration: sqRes[i].registration, type: sqRes[i].aircraftType, msn: sqRes[i].msn, airline: sqRes[i].airline}
             })
             this.photos = patched;
+            this.getCurrentPage();
             if(this.$route.hash) {
               this.$nextTick(() => {
                 document.getElementById(this.$route.hash.replace("#", "")).scrollIntoView(true);
