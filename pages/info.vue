@@ -6,6 +6,7 @@
     <p>Most of the additional metadata relating to an aircraft is pulled from <a rel="nofollow" href="https://www.opensky-network.org">The OpenSky Network</a>.</p>
     <h3>Contact</h3>
     <p>I can be reached by email by replacing the first '.' of this site's address with an @.</p>
+    <p>Alternatively, you can DM me on <a rel="nofollow" href="https://twitter.com/picsthomasgg">Twitter</a>.</p>
     <h3>A word on copyright</h3>
     <p>Unless otherwise stated, all photos are owned by myself. Please don't use my photos elsewhere without my permission!</p>
   </div>
