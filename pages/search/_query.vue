@@ -1,11 +1,33 @@
 <template>
   <div class="container">
     <div>
+      <b-row>
+        <b-col lg="12">
+          <b-pagination
+            v-model="currentPage"
+            :total-rows="photos.length"
+            :per-page="perPage"
+            @input="getCurrentPage()"
+            align="center"
+            class="mt-3"
+            id="top_pagination"
+          />
+        </b-col>
+      </b-row>
+      <transition name="fade">
       <b-card-group>
-          <div v-for="photo in photos" :key="photo.uuid">
+          <div v-for="photo in page_items" :key="photo.uuid">
             <album-content-item :photo="photo" :id="photo.uuid"></album-content-item>
           </div>
       </b-card-group>
+      </transition>
+      <b-pagination
+        v-model="currentPage"
+        :total-rows="photos.length"
+        :per-page="perPage"
+        align="center"
+        class="mt-3"
+      />
     </div>
   </div>
 </template>
@@ -24,6 +46,12 @@ export default {
     this.getPhotos();
   },
   methods: {
+    getCurrentPage() {
+      if(this.currentPage == null) return;
+      this.page_items = this.photos.slice((this.currentPage - 1) * this.perPage, this.currentPage * this.perPage);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    },
     generateSQL() {
       let sql = "(";
       for(let orIndex = 0; orIndex < this.query.length; orIndex++) {
@@ -96,9 +124,12 @@ export default {
   data() {
     return {
       photos: [],
+      page_items: [],
       query: [],
       sort_key: "timestamp",
       sort_order: "DESC",
+      currentPage: 0,
+      perPage: 30
     };
   }
 };
