@@ -93,9 +93,9 @@ export default {
     },
     async getData() {
       await this.$axios
-        .$get("https://pics.thomas.gg/api/search/data")
+        .$get("https://pics.thomas.gg/api/v1/photos")
         .then(res => {
-          sessionStorage.setItem("database", JSON.stringify(res));
+          sessionStorage.setItem("database", JSON.stringify(res.data));
           this.performQuery();
         })
         .catch(res => {});
@@ -108,7 +108,7 @@ export default {
               uuid: sqRes[i].uuid,
               timestamp: sqRes[i].timestamp,
               camera: sqRes[i].camera,
-              aircraft: {registration: sqRes[i].registration, type: sqRes[i].aircraftType, msn: sqRes[i].msn, airline: sqRes[i].airline}
+              aircraft: {registration: sqRes[i].registration, type: sqRes[i].aircraft_type, msn: sqRes[i].msn, airline: sqRes[i].airline}
             })
             this.photos = patched;
             this.getCurrentPage();

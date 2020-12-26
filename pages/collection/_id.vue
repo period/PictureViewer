@@ -3,7 +3,7 @@
     <div>
       <b-overlay :show="!loaded">
         <h1>{{collection.name}}</h1>
-        <collection-progress :states="collection.states"></collection-progress>
+        <collection-progress :progress="collection.progress"></collection-progress>
         <h3>Photographed:</h3>
         <b-card-group>
             <div v-for="item in photos" :key="item.id">
@@ -11,12 +11,13 @@
             </div>
         </b-card-group>
         <h3>Missing/Needs retake:</h3>
-        <div v-if="missingAirlines.length == 0"><p>None! :)</p></div>
-        <div v-if="missingAirlines.length != 0">
-          <div v-for="airline in missingAirlines" :key="airline.icao">
-            <b-card :title="missing[airline].name">
+        <div v-if="missing.length == 0"><p>None! :)</p></div>
+        <div v-if="missing.length != 0">
+          <div v-for="airline in missing_airlines" :key="airline">
+            <b-card :title="airline">
               <b-row>
-                <b-col sm=2 v-for="aircraft in missing[airline].aircraft" :key="aircraft.registration">
+                <b-col sm=2 v-for="aircraft in missing_grouped[airline]" :key="aircraft.registration">
+                  <p class="text-danger" v-if="aircraft.state == 'IMPOSSIBLE'">{{ aircraft.registration }}</p>
                   <p class="text-warning" v-if="aircraft.state == 'NOT_PHOTOGRAPHED'">{{ aircraft.registration }}</p>
                   <p class="text-info" v-if="aircraft.state == 'NEEDS_RETAKE'">{{ aircraft.registration }}</p>
                 </b-col>
@@ -40,13 +41,19 @@ export default {
   methods: {
     async getPhotos() {
       await this.$axios
-        .$get("https://pics.thomas.gg/api/collections/view?id=" + this.$route.params.id, {})
+        .$get("https://pics.thomas.gg/api/v1/collections/" + this.$route.params.id, {})
         .then(res => {
+          res = res.data;
           this.collection = res;
-          this.photos = res.aircraft.filter(aircraft => aircraft.photo!=null)
-          this.missing = res.missing;
-          this.missingAirlines = Object.keys(res.missing)
-          this.items = res.aircraft;
+          this.photos = res.aircraft.filter(aircraft => aircraft.photo!=null);
+          this.missing = res.aircraft.filter(aircraft => aircraft.state != 'PHOTOGRAPHED');
+          this.missing_grouped = {};
+          for(let i = 0; i < this.missing.length; i++) {
+            if(this.missing[i].operator == null) this.missing[i].operator = {icao: null, iata: null, name: "Unknown"};
+            if(this.missing_grouped[this.missing[i].operator.name] == null) this.missing_grouped[this.missing[i].operator.name]= [];
+            this.missing_grouped[this.missing[i].operator.name].push(this.missing[i]);
+          }
+          this.missing_airlines = Object.keys(this.missing_grouped);
           this.loaded = true;
           if(this.$route.hash) {
             this.$nextTick(() => {
@@ -59,11 +66,11 @@ export default {
   },
   data() {
     return {
-      collection: {states:{}},
-      items: [],
+      collection: {progress:[]},
       photos: [],
       missing: [],
-      missingAirlines: [],
+      missing_grouped: {},
+      missing_airlines: [],
       loaded: false
     };
   }

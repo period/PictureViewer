@@ -28,9 +28,9 @@ export default {
     };
   },
   mounted() {
-    this.time = this.$moment.unix(this.album.last_updated).fromNow();
+    this.time = this.$moment.unix(this.album.last_update).fromNow();
     setInterval(() => {
-      this.time = this.$moment.unix(this.album.last_updated).fromNow();
+      this.time = this.$moment.unix(this.album.last_update).fromNow();
     }, 1000);
   }
 };

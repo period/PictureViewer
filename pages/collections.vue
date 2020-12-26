@@ -22,9 +22,9 @@ export default {
   methods: {
     async getCollections() {
       await this.$axios
-        .$get("https://pics.thomas.gg/api/collections/list", {})
+        .$get("https://pics.thomas.gg/api/v1/collections", {})
         .then(res => {
-          this.collections = res;
+          this.collections = res.data;
           this.loaded = true;
         })
         .catch(res => {});

@@ -8,7 +8,7 @@
       top
     ></b-card-img-lazy>
     <template v-slot:footer>
-      <collection-progress :states="collection.states"></collection-progress>
+      <collection-progress :progress="collection.progress"></collection-progress>
       <b-button class="float-right" style="margin-top:5px" variant="primary" :to="'/collection/' + collection.id">View</b-button>
     </template>
   </b-card>
@@ -22,7 +22,7 @@ export default {
   props: {
     collection: {
       type: Object,
-      default: {}
+      default: {progress:[]}
     }
   },
   data() {

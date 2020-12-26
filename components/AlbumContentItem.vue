@@ -1,15 +1,12 @@
 <template>
   <b-card>
-    <b-card-title>{{ photo.aircraft.registration }}</b-card-title>
+    <b-card-title>{{ photo.registration }}</b-card-title>
     <b-card-img-lazy
       :src="
         'https://pics.thomas.gg/storage/thumbnails/' + photo.uuid + '.jpg'
       "
       top
     ></b-card-img-lazy>
-    <b-card-text>
-      {{ photo.description }}
-    </b-card-text>
     <template v-slot:footer>
       <small class="text-muted">Taken with {{ photo.camera }}, {{ time }}</small>
         <b-button class="float-right" variant="primary" :to="'/photo/' + photo.uuid">More</b-button>

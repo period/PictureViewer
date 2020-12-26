@@ -22,9 +22,9 @@ export default {
   methods: {
     async getPhotos() {
       await this.$axios
-        .$get("https://pics.thomas.gg/api/albums/retrieve?id=" + this.$route.params.id, {})
+        .$get("https://pics.thomas.gg/api/v1/albums/" + this.$route.params.id, {})
         .then(res => {
-          this.photos = res.photos;
+          this.photos = res.data.photos;
           this.loaded = true;
           if(this.$route.hash) {
             this.$nextTick(() => {

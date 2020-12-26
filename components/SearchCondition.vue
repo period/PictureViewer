@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-        fields: [{value: null, text: "Select field..."}, {value: "registration", text: "Aircraft registration"}, {value: "timestamp", text: "Date taken"}, {value: "aircraftType", text: "Aircraft type"}, {value: "msn", text: "Manufacturer's serial number (MSN)"}, {value: "airline", text: "Airline"}, {value: "camera", text: "Camera"}, {value: "caption", text: "Caption"}],
+        fields: [{value: null, text: "Select field..."}, {value: "registration", text: "Aircraft registration"}, {value: "timestamp", text: "Date taken"}, {value: "aircraft_type", text: "Aircraft type"}, {value: "msn", text: "Manufacturer's serial number (MSN)"}, {value: "airline", text: "Airline"}, {value: "camera", text: "Camera"}, {value: "caption", text: "Caption"}],
         selectedField: null,
         selectedOperator: null,
         selectedValue: null,
@@ -74,7 +74,7 @@ export default {
       getValueDropdownOptions() {
           if(this.selectedField == null) return [];
           if(this.selectedOperator != null && (this.selectedOperator == "equals" || this.selectedOperator == "not_equals")) {
-              if(this.selectedField == "aircraftType") return this.valueProps.types;
+              if(this.selectedField == "aircraft_type") return this.valueProps.types;
               if(this.selectedField == "airline") return this.valueProps.airlines;
           }
           return [];
