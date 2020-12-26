@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>Photo of {{ photo.registration }}</h1>
+    <h1>Photo of {{ photo.aircraft.registration }}</h1>
     <b-button v-if="photo.relative.previous != null" variant="primary" pill class="float-left" :to="'/photo/' + photo.relative.previous"><fa :icon="['fas', 'chevron-left']" /> Last Photo</b-button>
     <b-button  v-if="photo.relative.next != null" variant="primary" pill class="float-right" :to="'/photo/' + photo.relative.next"><fa :icon="['fas', 'chevron-right']" /> Next Photo</b-button>
     <b-img :src="'https://pics.thomas.gg/storage/full/' + this.$route.params.uuid + '.jpg'" fluid id="photo" class="mt-2" @load="imageLoaded()"></b-img>
@@ -27,10 +27,10 @@
         <b-col md="4">
           <h5><fa :icon="['fas', 'plane']" /> Aircraft</h5>
           <hr>
-          Registration: <b-link :to='generateSearch([{field: "registration", operator: "equals", value: photo.registration}])'>{{ photo.registration }}</b-link>
-          <br>Type: <b-link :to='generateSearch([{field: "aircraftType", operator: "equals", value: photo.aircraft_type}])'>{{ photo.aircraft_type }}</b-link>
-          <br>MSN: <b-link :to='generateSearch([{field: "aircraftType", operator: "equals", value: photo.aircraft_type}, {field: "msn", operator: "equals", value: photo.msn}])'>{{ photo.msn }}</b-link>
-          <br>Airline: <b-link :to='generateSearch([{field: "airline", operator: "equals", value: photo.airline}])'>{{ photo.airline }}</b-link>
+          Registration: <b-link :to='generateSearch([{field: "registration", operator: "equals", value: photo.aircraft.registration}])'>{{ photo.aircraft.registration }}</b-link>
+          <br>Type: <b-link :to='generateSearch([{field: "aircraftType", operator: "equals", value: photo.aircraft.type}])'>{{ photo.aircraft.type }}</b-link>
+          <br>MSN: <b-link :to='generateSearch([{field: "aircraftType", operator: "equals", value: photo.aircraft.type}, {field: "msn", operator: "equals", value: photo.aircraft.msn}])'>{{ photo.aircraft.msn }}</b-link>
+          <br>Airline: <b-link :to='generateSearch([{field: "airline", operator: "equals", value: photo.aircraft.airline}])'>{{ photo.aircraft.airline }}</b-link>
         </b-col>
         <b-col md="4">
           <h5><fa :icon="['fas', 'camera']" /> Camera</h5>
@@ -99,9 +99,9 @@ export default {
     },
     async getPhoto() {
       await this.$axios
-        .$get("https://pics.thomas.gg/api/v1/photos/" + this.$route.params.uuid, {})
+        .$get("https://pics.thomas.gg/api/photo?id=" + this.$route.params.uuid, {})
         .then(res => {
-          this.photo = res.data;
+          this.photo = res.photo;
           this.loaded = true;
         })
         .catch(res => {});

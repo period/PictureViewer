@@ -39,9 +39,9 @@ export default {
   },
   async mounted() {
     await this.$axios
-        .$get("https://pics.thomas.gg/api/v1/albums/1", {})
+        .$get("https://pics.thomas.gg/api/featured", {})
         .then(res => {
-          this.featured = res.data.photos;
+          this.featured = res;
         })
         .catch(res => {});
   }

@@ -22,9 +22,9 @@ export default {
   methods: {
     async getAlbums() {
       await this.$axios
-        .$get("https://pics.thomas.gg/api/v1/albums", {})
+        .$get("https://pics.thomas.gg/api/albums/list", {})
         .then(res => {
-          this.albums = res.data.filter((album) => { return album.id != 1 }); // do not show featured album
+          this.albums = res.albums;
           this.loaded = true;
         })
         .catch(res => {});
