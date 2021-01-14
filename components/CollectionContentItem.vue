@@ -1,17 +1,25 @@
 <template>
-  <b-card>
-    <b-card-title>{{ item.registration }} <b-badge variant="info" v-if="item.state == 'NEEDS_RETAKE'" style="max-height: 1.5rem;">Needs Retake</b-badge></b-card-title>
-    <b-card-img-lazy
-      :src="'https://pics.thomas.gg/storage/thumbnails/' + item.photo + '.jpg'"
-      top
-    ></b-card-img-lazy>
-    <b-card-text>
-    </b-card-text>
-    <template v-slot:footer>
-      <small class="text-muted">Taken {{ time }} using {{ item.camera }}</small>
-        <b-button class="float-right" variant="primary" :to="'/photo/' + item.photo">More</b-button>
-    </template>
-  </b-card>
+  <n-link :to="'/photo/' + item.photo" class="nocolour">
+    <div class="card mb-3 card-hover">
+      <img
+          :src="
+            'https://pics.thomas.gg/storage/thumbnails/' + item.photo + '.jpg'
+          "
+          class="card-img-top"
+        >
+      <div class="card-body">
+          <h5 class="card-title">{{ item.registration }} <badge class="badge badge-pill badge-warning" v-if="item.state == 'NEEDS_RETAKE'">Needs Retake</badge></h5>
+          <div class="row text-muted">
+            <div class="col-md-5">
+              <p class="card-muted"><strong><fa class="card-icon fa-fw align-middle" :icon="['fas', 'calendar-day']" /></strong> Taken <strong>{{ time }}</strong></p>
+            </div>
+            <div class="col-md-7">
+              <p class="card-muted"><strong><fa class="card-icon fa-fw align-middle" :icon="['fas', 'camera']" /></strong> {{ item.camera }}</p>
+            </div>
+          </div>
+      </div>
+    </div>
+  </n-link>
 </template>
 <script>
 export default {

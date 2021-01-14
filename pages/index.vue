@@ -7,7 +7,7 @@
                         <h1>Welcome to pics.thomas.gg!</h1>
                     </div>
                     <div class="background-header-text background-header-text-aircraft">
-                        <h3>Featured photo: 9V-SMF</h3>
+                        <h5>Featured photo: 9V-SMF</h5>
                     </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@
         top: 20%;
     }
     .background-header-text-aircraft {
-        left: 10%;
+        left: 6.5%;
         top: 97.5%;
     }
 </style>

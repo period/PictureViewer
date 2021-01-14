@@ -1,15 +1,19 @@
 <template>
   <div class="container">
     <div>
-      <b-overlay :show="!loaded">
+      <overlay :show="!loaded">
         <h1>{{collection.name}}</h1>
-        <collection-progress :states="collection.states"></collection-progress>
+        <div class="row mt-2">
+          <div class="col-lg-12">
+            <collection-progress :states="collection.states"></collection-progress>
+          </div>
+        </div>
         <h3>Photographed:</h3>
-        <b-card-group>
+        <div class="card-deck">
             <div v-for="item in photos" :key="item.id">
               <collection-content-item :item="item"></collection-content-item>
             </div>
-        </b-card-group>
+        </div>
         <h3>Missing/Needs retake:</h3>
         <div v-if="missingAirlines.length == 0"><p>None! :)</p></div>
         <div v-if="missingAirlines.length != 0">
@@ -24,7 +28,7 @@
             </b-card>
           </div>
         </div>
-      </b-overlay>
+      </overlay>
     </div>
   </div>
 </template>

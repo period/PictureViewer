@@ -13,7 +13,8 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      {rel: 'stylesheet', type: 'text/css', href: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css'}
+      { rel: 'stylesheet', type: 'text/css', href: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css'},
+      { rel: 'stylesheet', type: 'text/css', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap'}
     ]
   },
   /*
@@ -23,7 +24,9 @@ export default {
   /*
   ** Global CSS
   */
-  css: [],
+  css: [
+    "assets/css/site.css"
+  ],
   /*
   ** Plugins to load before mounting the App
   */

@@ -1,16 +1,34 @@
 <template>
-    <b-form-row>
-        <b-col md="2"><b-form-select v-model="selectedField" :options="fields" @input="update()"></b-form-select></b-col>
-        <b-col md="2"><b-form-select v-model="selectedOperator" :options="getOperators()" :disabled="selectedField == null" @input="update()"></b-form-select></b-col>
-        <b-col md="5" v-if="getValueDropdownOptions().length > 0"><b-form-select v-model="selectedValue" :options="getValueDropdownOptions()" :disabled="selectedOperator == null" @input="update()"></b-form-select></b-col>
-        <b-col md="5" v-if="getValueDropdownOptions().length == 0 && this.selectedField != 'timestamp' && (this.selectedField == 'caption' && this.selectedOperator != null && this.selectedOperator.endsWith('null')) == false"><b-form-input v-model="selectedValue" placeholder="Enter a value" :disabled="selectedOperator == null" @input="update()"></b-form-input></b-col>
-        <b-col md="5" v-if="this.selectedField == 'timestamp'"><b-form-datepicker v-model="selectedValue" start-weekday="1" class="mb-2" @input="update()"></b-form-datepicker></b-col>
-        <b-col md="1"><b-button variant="secondary" class="w-100" @click="and()">and</b-button></b-col>
-        <b-col md="1"><b-button v-if="displayOr" variant="secondary" class="w-100" @click="or()">or</b-button></b-col>
-        <b-col md="1"><b-button variant="danger" class="w-100" @click="remove()"><fa :icon="['fas', 'trash']" /></b-button></b-col>
-    </b-form-row>
+    <div class="row no-gutters align-center">
+        <div class="col-md-3 px-1">
+          <select class="form-control" v-model="selectedField" @change="update()">
+            <option v-for="field in fields" :value="field.value">{{field.text}}</option>
+          </select>
+        </div>
+        <div class="col-md-3 px-1">
+          <select class="form-control" v-model="selectedOperator" :disabled="selectedField == null" @change="update()">
+            <option v-for="field in getOperators()" :value="field.value">{{field.text}}</option>
+          </select>
+        </div>
+        <div class="col-md-3 px-1" v-if="getValueDropdownOptions().length > 0">
+          <select class="form-control" v-model="selectedValue" :disabled="selectedOperator == null" @change="update()">
+            <option v-for="field in getValueDropdownOptions()" :value="field.value">{{field.text}}</option>
+          </select>
+        </div>
+        <div class="col-md-3 px-1" v-if="getValueDropdownOptions().length == 0 && this.selectedField != 'timestamp' && (this.selectedField == 'caption' && this.selectedOperator != null && this.selectedOperator.endsWith('null')) == false">
+          <input class="form-control" v-model="selectedValue" placeholder="Enter a value" :disabled="selectedOperator == null" @input="update()">
+        </div>
+        <div class="col-md-3 px-1" v-if="this.selectedField == 'timestamp'">
+          <date-picker v-model="selectedValue" class="mb-2" @input="update()"></date-picker>
+        </div>
+        <div class="col-md-1 px-1"><button class="btn btn-secondary w-100" @click="and()">and</button></div>
+        <div class="col-md-1 px-1"><button v-if="displayOr" class="btn btn-secondary w-100" @click="or()">or</button></div>
+        <div class="col-md-1 px-1"><button class="btn btn-danger w-100" @click="remove()"><fa :icon="['fas', 'trash']" /></button></div>
+    </div>
 </template>
 <script>
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
 export default {
   name: "SearchCondition",
   props: {
@@ -33,6 +51,7 @@ export default {
         default: true
     }
   },
+  components: {DatePicker},
   data() {
     return {
         fields: [{value: null, text: "Select field..."}, {value: "registration", text: "Aircraft registration"}, {value: "timestamp", text: "Date taken"}, {value: "aircraftType", text: "Aircraft type"}, {value: "msn", text: "Manufacturer's serial number (MSN)"}, {value: "airline", text: "Airline"}, {value: "camera", text: "Camera"}, {value: "caption", text: "Caption"}],

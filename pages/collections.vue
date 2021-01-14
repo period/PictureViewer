@@ -1,13 +1,14 @@
 <template>
   <div class="container">
+    <h1>Collections</h1>
     <div>
-      <b-overlay :show="!loaded">
-        <b-card-group>
+      <overlay :show="!loaded">
+        <div class="card-deck">
             <div v-for="collection in collections" :key="collection.id">
               <collection-item :collection="collection"></collection-item>
             </div>
-        </b-card-group>
-      </b-overlay>
+        </div>
+      </overlay>
     </div>
   </div>
 </template>

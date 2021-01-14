@@ -1,27 +1,37 @@
 <template>
   <div class="container">
     <h1>Search</h1>
-    <b-overlay :show="!loaded" :key="deletionKey">
+    <overlay :show="!loaded" :key="deletionKey">
         <div v-for="(ors, orIndex) in query" :key="'or_' + orIndex">
-          <b-card class="text-center">
+          <div class="card card-border text-center">
           <div v-for="(and, andIndex) in ors" :key="'and_' + andIndex">
             <search-condition class="mb-1" :valueProps="{types: types, airlines: airlines, andIndex: andIndex, orIndex: orIndex}" :field="and.field" :operator="and.operator" :value="and.value" :displayOr="!(orIndex < query.length-1) && !(andIndex < query[orIndex].length-1)" />
           </div>
-          </b-card>
+          </div>
           <div v-if="orIndex < query.length-1" class="text-center separator">
             <b>or</b>
           </div>
         </div>
-    </b-overlay>
+    </overlay>
     <br>
     <strong>Sort by</strong>
-    <b-form-row>
-      <b-col md="3"><b-form-select @input="generateSQL()" v-model="sort_key" :options="[{text: 'Timestamp', value: 'timestamp'}, {text: 'MSN', value: 'msn'}, {text: 'Aircraft registration', value: 'registration'}]"></b-form-select></b-col>
-      <b-col md="2"><b-form-select @input="generateSQL()" v-model="sort_order" :options="[{text: 'Descending', value: 'DESC'}, {text: 'Ascending', value: 'ASC'}]"></b-form-select></b-col>
-
-    </b-form-row>
+    <div class="row">
+      <div class="col-md-3">
+        <select class="form-control" @input="generateSQL()" v-model="sort_key">
+          <option value="timestamp">Timestamp</option>
+          <option value="msn">MSN</option>
+          <option value="registration">Aircraft registration</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select class="form-control" @input="generateSQL()" v-model="sort_order">
+          <option value="DESC">Descending</option>
+          <option value="ASC">Ascending</option>
+        </select>
+      </div>
+    </div>
     <br>
-    <b-button variant="primary" @click="search()">Search</b-button>
+    <button class="btn btn-primary" @click="search()">Search</button>
     <br><br>
     <p><strong>Generated query: </strong> {{ this.query }}</p>
     <p><strong>Generated SQL: </strong> {{ this.sql }}</p>

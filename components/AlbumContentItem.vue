@@ -1,20 +1,25 @@
 <template>
-  <b-card>
-    <b-card-title>{{ photo.aircraft.registration }}</b-card-title>
-    <b-card-img-lazy
-      :src="
-        'https://pics.thomas.gg/storage/thumbnails/' + photo.uuid + '.jpg'
-      "
-      top
-    ></b-card-img-lazy>
-    <b-card-text>
-      {{ photo.description }}
-    </b-card-text>
-    <template v-slot:footer>
-      <small class="text-muted">Taken with {{ photo.camera }}, {{ time }}</small>
-        <b-button class="float-right" variant="primary" :to="'/photo/' + photo.uuid">More</b-button>
-    </template>
-  </b-card>
+  <n-link :to="'/photo/' + photo.uuid" class="nocolour">
+    <div class="card mb-3 card-hover">
+      <img
+          :src="
+            'https://pics.thomas.gg/storage/thumbnails/' + photo.uuid + '.jpg'
+          "
+          class="card-img-top"
+        >
+      <div class="card-body">
+          <h5 class="card-title">{{ photo.aircraft.registration }}</h5>
+          <div class="row text-muted">
+            <div class="col-md-5">
+              <p class="card-muted"><strong><fa class="card-icon fa-fw align-middle" :icon="['fas', 'calendar-day']" /></strong> Taken <strong>{{ time }}</strong></p>
+            </div>
+            <div class="col-md-7">
+              <p class="card-muted"><strong><fa class="card-icon fa-fw align-middle" :icon="['fas', 'camera']" /></strong> {{ photo.camera }}</p>
+            </div>
+          </div>
+      </div>
+    </div>
+  </n-link>
 </template>
 <script>
 export default {

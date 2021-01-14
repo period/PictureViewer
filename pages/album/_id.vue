@@ -1,13 +1,14 @@
 <template>
   <div class="container">
     <div>
-      <b-overlay :show="!loaded">
-        <b-card-group>
+      <h1>{{ album.name }}</h1>
+      <overlay :show="!loaded">
+        <div class="card-group">
             <div v-for="photo in photos" :key="photo.uuid">
               <album-content-item :photo="photo" :id="photo.uuid"></album-content-item>
             </div>
-        </b-card-group>
-      </b-overlay>
+        </div>
+      </overlay>
     </div>
   </div>
 </template>
@@ -24,6 +25,7 @@ export default {
       await this.$axios
         .$get("https://pics.thomas.gg/api/albums/retrieve?id=" + this.$route.params.id, {})
         .then(res => {
+          this.album = res.album;
           this.photos = res.photos;
           this.loaded = true;
           if(this.$route.hash) {
@@ -38,6 +40,7 @@ export default {
   data() {
     return {
       photos: [],
+      album: {},
       loaded: false
     };
   }

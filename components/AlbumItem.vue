@@ -1,17 +1,25 @@
 <template>
-  <b-card>
-    <b-card-title>{{ album.name }}</b-card-title>
-    <b-card-img-lazy
-      :src="
-        'https://pics.thomas.gg/storage/thumbnails/' + album.header + '.jpg'
-      "
-      top
-    ></b-card-img-lazy>
-    <template v-slot:footer>
-      <small class="text-muted">{{ album.photos }} photos / Last updated {{ time }}</small>
-        <b-button class="float-right" variant="primary" :to="'/album/' + album.id">View</b-button>
-    </template>
-  </b-card>
+  <n-link :to="'/album/' + album.id" class="nocolour">
+    <div class="card mb-3 card-hover">
+      <img
+        :src="
+          'https://pics.thomas.gg/storage/thumbnails/' + album.header + '.jpg'
+        "
+        class="card-img-top"
+      >
+      <div class="card-body">
+        <h5 class="card-title">{{ album.name }}</h5>
+        <div class="row text-muted">
+          <div class="col-md-4">
+            <p class="card-muted"><strong><fa class="card-icon fa-fw align-middle" :icon="['fas', 'images']" /></strong> <strong>{{ album.photos }}</strong> photos</p>
+          </div>
+          <div class="col-md-7">
+            <p class="card-muted"><strong><fa class="card-icon fa-fw align-middle" :icon="['fas', 'calendar-day']" /></strong> Updated {{ time }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </n-link>
 </template>
 <script>
 export default {
