@@ -9,6 +9,7 @@
       >
       </b-jumbotron>
       -->
+      <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
       <h5>Featured photos</h5>
       <b-carousel
         v-model="slide"
