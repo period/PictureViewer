@@ -32,7 +32,7 @@ export default {
   */
   plugins: [
     "~/plugins/alasql.js",
-    "~/plugins/caption_parser.js"
+    "~/plugins/caption_parser.js",
   ],
   /*
   ** Nuxt.js dev-modules
@@ -47,7 +47,8 @@ export default {
     '@nuxtjs/axios',
     '@nuxtjs/moment',
     ['@nuxtjs/moment', { tdefaultLocale: 'en', locales: ['en'] }],
-    ["nuxt-fontawesome", {component: "fa", imports: [{set: "@fortawesome/free-solid-svg-icons", icons: ["fas"]}]}]
+    ["nuxt-fontawesome", {component: "fa", imports: [{set: "@fortawesome/free-solid-svg-icons", icons: ["fas"]}]}],
+    "nuxt-lazy-load"
   ],
   /*
   ** Axios module configuration
