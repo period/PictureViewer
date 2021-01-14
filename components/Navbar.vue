@@ -73,7 +73,6 @@ export default {
         if(currentPosition > this.previousScroll) isScrollDown = true;
         this.previousScroll = currentPosition;
 
-        console.log(currentPosition);
         if(isScrollDown && currentPosition >= 60) {
             this.fadeIn = true;
             this.fadeOut = false;
