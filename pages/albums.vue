@@ -1,13 +1,12 @@
 <template>
   <div class="container">
     <div>
-      <b-overlay :show="!loaded">
-        <b-card-group>
+      <h1>Albums</h1>
+        <div class="card-deck">
             <div v-for="album in albums" :key="album.id">
               <album-item :album="album"></album-item>
             </div>
-        </b-card-group>
-      </b-overlay>
+        </div>
     </div>
   </div>
 </template>

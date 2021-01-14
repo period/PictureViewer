@@ -1,10 +1,10 @@
 <template>
-  <b-progress class="mt-2" :max="calculateTotal()" show-value>
-    <b-progress-bar v-b-tooltip.hover :title="this.states['PHOTOGRAPHED'] + ' aircraft - Amount of aircraft in this collection that I have good photos of'" :value="this.states['PHOTOGRAPHED']" variant="success" :label="'Photographed (' + Math.round((this.states['PHOTOGRAPHED'] / calculateTotal())*100)+'%)'"></b-progress-bar>
-    <b-progress-bar v-b-tooltip.hover :title="this.states['NEEDS_RETAKE'] + ' aircraft - Amount of aircraft in this collection that I have a photo of, but I am not happy with (e.g. unable to read registration clearly)'" :value="this.states['NEEDS_RETAKE']" variant="info" :label="'Needs retake (' + Math.round((this.states['NEEDS_RETAKE'] / calculateTotal())*100)+'%)'"></b-progress-bar>
-    <b-progress-bar v-b-tooltip.hover :title="this.states['NOT_PHOTOGRAPHED'] + ' aircraft - Amount of aircraft in this collection that I do not have a photo of at all'" :value="this.states['NOT_PHOTOGRAPHED']" variant="warning" :label="'Not Photographed (' + Math.round((this.states['NOT_PHOTOGRAPHED'] / calculateTotal())*100)+'%)'"></b-progress-bar>
-    <b-progress-bar v-b-tooltip.hover :title="this.states['IMPOSSIBLE'] + ' aircraft - Amount of aircraft in this collection that have been retired and do not have a photograph'" :value="this.states['IMPOSSIBLE']" variant="danger" :label="'Impossible (' + Math.round((this.states['IMPOSSIBLE'] / calculateTotal())*100)+'%)'"></b-progress-bar>
-  </b-progress>
+  <div class="progress mt-2">
+    <div class="progress-bar bg-success" :style="'width: ' + getPercentage('PHOTOGRAPHED') + '%'">Photographed ({{ getPercentage("PHOTOGRAPHED") }}%)</div>
+    <div class="progress-bar bg-info" :style="'width: ' + getPercentage('NEEDS_RETAKE') + '%'">Needs Retake ({{ getPercentage("NEEDS_RETAKE") }}%)</div>
+    <div class="progress-bar bg-warning" :style="'width: ' + getPercentage('NOT_PHOTOGRAPHED') + '%'">Not Photographed ({{ getPercentage("NOT_PHOTOGRAPHED") }}%)</div>
+    <div class="progress-bar bg-danger" :style="'width: ' + getPercentage('IMPOSSIBLE') + '%'">Impossible ({{ getPercentage("IMPOSSIBLE") }}%)</div>
+  </div>
 </template>
 <script>
 export default {
@@ -23,6 +23,9 @@ export default {
   methods: {
     calculateTotal() {
       return this.states["PHOTOGRAPHED"] + this.states["NEEDS_RETAKE"] + this.states["NOT_PHOTOGRAPHED"] + this.states["IMPOSSIBLE"];
+    },
+    getPercentage(state) {
+      return ((this.states[state] / this.calculateTotal())*100).toFixed(1);
     }
   }
 };

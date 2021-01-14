@@ -1,17 +1,20 @@
 <template>
-  <b-card>
-    <b-card-title>{{ collection.name }}</b-card-title>
-    <b-card-img-lazy
-      :src="
-        'https://pics.thomas.gg/storage/thumbnails/' + collection.header + '.jpg'
-      "
-      top
-    ></b-card-img-lazy>
-    <template v-slot:footer>
-      <collection-progress :states="collection.states"></collection-progress>
-      <b-button class="float-right" style="margin-top:5px" variant="primary" :to="'/collection/' + collection.id">View</b-button>
-    </template>
-  </b-card>
+  <n-link :to="'/collection/' + collection.id" class="nocolour">
+    <div class="card mb-3 card-hover">
+      <img
+        :src="
+          'https://pics.thomas.gg/storage/thumbnails/' + collection.header + '.jpg'
+        "
+        class="card-img-top"
+      >
+      <div class="card-body">
+        <h5 class="card-title">{{ collection.name }}</h5>
+        <div class="row d-flex justify-content-center">
+          <collection-progress :states="collection.states" />
+        </div>
+      </div>
+    </div>
+  </n-link>
 </template>
 <script>
 import CollectionProgress from "../components/CollectionProgress";

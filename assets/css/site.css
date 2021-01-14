@@ -1,0 +1,43 @@
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+body {
+  font-family: "Inter", sans-serif !important;
+  font-weight: 400;
+}
+
+.nocolour {
+    color:inherit;
+    text-decoration: none;
+}
+.nocolour:hover {
+    color:inherit;
+    text-decoration: none;
+}
+
+.card {
+    border: 1px solid #ddd !important;
+    transition: box-shadow 0.3s ease-in-out;
+}
+.card-border {
+    border: 1px solid rgba(0,0,0,.125);
+    padding: 5px;
+}
+.card-hover:hover {
+    box-shadow: 8px 8px 8px 1px hsla(0,0%,0%,0.2);
+    transition: box-shadow 0.3s ease-in-out;
+}
+.card-body {
+    padding: 15px;
+}
+.card-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+.card-icon {
+    font-size: 24px;
+}
+.card-muted {
+    font-size: 14px;
+}
