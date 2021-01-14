@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg sticky-top navbar-dark" v-bind:class="{'animate-nav-in': fadeIn, 'animate-nav-out': fadeOut, 'noanimate': ($nuxt.$route.name != 'index')}">
+  <nav class="navbar navbar-expand-lg sticky-top navbar-dark" v-bind:class="{'animate-nav-in': fadeIn, 'animate-nav-out': fadeOut, 'noanimate': noAnimate}">
     <div class="container">
       <n-link to="/" class="navbar-brand">pics.thomas.gg</n-link>
       <button
@@ -57,20 +57,28 @@
 export default {
   name: "Navbar",
   mounted() {
-      if($nuxt.$route.name == "index") window.addEventListener("scroll", this.onScroll);
+    window.addEventListener("scroll", this.onScroll);
   },
   beforeDestroy() {
-      window.removeEventListener("scroll", this.onScroll);
+    window.removeEventListener("scroll", this.onScroll);
   },
   data() {
       return {
           fadeIn: false,
           fadeOut: false,
-          previousScroll: 0
+          previousScroll: 0,
+          noAnimate: $nuxt.$route.name != "index"
       }
   },
   methods: {
       onScroll() {
+        if($nuxt.$route.name != "index")  {
+            this.noAnimate = true;
+            this.fadeIn = false;
+            this.fadeOut = false;
+            return;
+        }
+        this.noAnimate = false;
         let currentPosition = window.pageYOffset || document.documentElement.scrollTop;
         let isScrollDown = false;
         if(currentPosition > this.previousScroll) isScrollDown = true;
