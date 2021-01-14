@@ -1,7 +1,7 @@
 <template>
-  <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark" v-bind:class="{'animate-nav-in': fadeIn, 'animate-nav-out': fadeOut}">
+  <nav class="navbar navbar-expand-lg sticky-top navbar-dark" v-bind:class="{'animate-nav-in': fadeIn, 'animate-nav-out': fadeOut, 'noanimate': ($nuxt.$route.name != 'index')}">
     <div class="container">
-      <a class="navbar-brand" href="#">pics.thomas.gg</a>
+      <n-link to="/" class="navbar-brand">pics.thomas.gg</n-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -13,17 +13,17 @@
 
       <div class="collapse navbar-collapse" id="navbar">
         <ul class="navbar-nav ml-auto my-2">
-          <li class="nav-item">
-            <a class="nav-link" href="#">Albums</a>
+          <li class="nav-item" v-bind:class="{'active': $nuxt.$route.name == 'albums'}">
+            <n-link to="/albums" class="nav-link">Albums</n-link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Collections</a>
+          <li class="nav-item" v-bind:class="{'active': $nuxt.$route.name == 'collections'}">
+            <n-link to="/collections" class="nav-link">Collections</n-link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Info</a>
+          <li class="nav-item" v-bind:class="{'active': $nuxt.$route.name == 'info'}">
+            <n-link to="/info" class="nav-link">About</n-link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#"><fa :icon="['fas', 'search']" /></a>
+          <li class="nav-item" v-bind:class="{'active': $nuxt.$route.name == 'search'}">
+            <n-link to="/search" class="nav-link"><fa :icon="['fas', 'search']" /></n-link>
           </li>
         </ul>
       </div>
@@ -31,30 +31,33 @@
   </nav>
 </template>
 <style scoped>
+.noanimate {
+    background-color: rgb(79,102,115);
+}
 .animate-nav-in {
     animation-name: fadeIn;
-    animation-duration: 2s;
+    animation-duration: 1.5s;
     animation-fill-mode: both;
 }
 @keyframes fadeIn {
-   0% {opacity: 1;}
-   100% {opacity: 0.4;}
+   0% {background-color: rgba(79,102,115,0);}
+   100% {background-color: rgba(79,102,115,1);}
 } 
 .animate-nav-out {
     animation-name: fadeOut;
-    animation-duration: 2s;
+    animation-duration: 1.5s;
     animation-fill-mode: both;
 }
 @keyframes fadeOut {
-   0% {opacity: 0.4;}
-   100% {opacity: 1;}
+   0% {background-color: rgba(79,102,115,1);}
+   100% {background-color:rgba(79,102,115,0);}
 } 
 </style>
 <script>
 export default {
   name: "Navbar",
   mounted() {
-      window.addEventListener("scroll", this.onScroll);
+      if($nuxt.$route.name == "index") window.addEventListener("scroll", this.onScroll);
   },
   beforeDestroy() {
       window.removeEventListener("scroll", this.onScroll);
