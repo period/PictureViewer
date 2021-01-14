@@ -12,7 +12,8 @@ export default {
       { hid: 'description', name: 'description', content: "My corner of the internet for my photos of aircraft" }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      {rel: 'stylesheet', type: 'text/css', href: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css'}
     ]
   },
   /*
@@ -41,7 +42,6 @@ export default {
   modules: [,
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    'bootstrap-vue/nuxt',
     '@nuxtjs/moment',
     ['@nuxtjs/moment', { tdefaultLocale: 'en', locales: ['en'] }],
     ["nuxt-fontawesome", {component: "fa", imports: [{set: "@fortawesome/free-solid-svg-icons", icons: ["fas"]}]}]
