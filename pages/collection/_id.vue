@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <div>
-      <overlay :show="!loaded">
         <h1>{{collection.name}}</h1>
         <div class="row mt-2">
           <div class="col-lg-12">
@@ -28,7 +27,6 @@
             </b-card>
           </div>
         </div>
-      </overlay>
     </div>
   </div>
 </template>

@@ -2,13 +2,11 @@
   <div class="container">
     <div>
       <h1>{{ album.name }}</h1>
-      <overlay :show="!loaded">
         <div class="card-group">
             <div v-for="photo in photos" :key="photo.uuid">
               <album-content-item :photo="photo" :id="photo.uuid"></album-content-item>
             </div>
         </div>
-      </overlay>
     </div>
   </div>
 </template>

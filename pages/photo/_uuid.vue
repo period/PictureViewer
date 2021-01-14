@@ -13,7 +13,6 @@
       </div>
     </div>
     <img :src="'https://pics.thomas.gg/storage/full/' + this.$route.params.uuid + '.jpg'" id="photo" class="mt-2 img-fluid" @load="imageLoaded()">
-    <overlay :show="!loaded">
       <div class="row mt-2">
         <div class="col-md-4">
           <h5><fa :icon="['fas', 'list-ol']" /> UUID</h5>
@@ -55,16 +54,15 @@
           <br>Lens: {{ exif.lens }}
         </div>
       </div>
-    </overlay>
     <hr>
-    <overlay :show="!loaded" class="mb-2">
+    <div class="mb-2">
       <h4>This photo is in {{ photo.albums.length + " album" + appendSuffix(photo.albums.length) }}:</h4>
       <div class="card-deck">
         <div v-for="album in photo.albums" :key="album.id">
           <album-item :album="album"></album-item>
         </div>
       </div>
-    </overlay>
+    </div>
   </div>
   </div>
 </template>

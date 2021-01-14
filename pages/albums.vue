@@ -2,13 +2,11 @@
   <div class="container">
     <div>
       <h1>Albums</h1>
-      <overlay :show="!loaded">
         <div class="card-deck">
             <div v-for="album in albums" :key="album.id">
               <album-item :album="album"></album-item>
             </div>
         </div>
-      </overlay>
     </div>
   </div>
 </template>

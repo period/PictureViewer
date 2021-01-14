@@ -2,18 +2,41 @@
     <div>
         <div class="container-fluid">
             <div class="background-header-holder">
-                <div class="background-header-image">
+                <div class="background-header-image" v-if="featured.uuid != null" v-bind:style="{ backgroundImage: 'url(https://pics.thomas.gg/storage/full/' + featured.uuid + '.jpg)' }">
                     <div class="background-header-text background-header-text-welcome">
                         <h1>Welcome to pics.thomas.gg!</h1>
                     </div>
                     <div class="background-header-text background-header-text-aircraft">
-                        <h5>Featured photo: 9V-SMF</h5>
+                        <n-link class="nocolour" :to="'/photo/' + featured.uuid"><h5>Featured photo: {{ featured.registration }}</h5></n-link>
                     </div>
                 </div>
             </div>
         </div>
         <div class="container">
-            <p v-for="i in 10">placeholder</p>
+            <div class="text-center">
+                <h3>Statistics</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4>{{ stats.registrations }}</h4>
+                        <p class="text-muted">unique registrations</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>{{ stats.photos }}</h4>
+                        <p class="text-muted">photos</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h4>{{ stats.airlines }}</h4>
+                        <p class="text-muted">unique airlines</p>
+                    </div>
+                </div>
+                <hr>
+                <h3>Recent Photos</h3>
+                <div class="card-deck">
+                    <div v-for="photo in recent_photos" :key="photo.uuid">
+                        <album-content-item :photo="photo" :id="photo.uuid"></album-content-item>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -26,7 +49,6 @@
     }
 
     .background-header-image {
-        background-image: url(https://pics.thomas.gg/storage/full/77de94b1-dfb2-4dc0-8a9b-d5d1bb74dfeb.jpg);
         height: 100vh;
         background-position: center;
         background-repeat: no-repeat;
@@ -50,19 +72,25 @@
     }
 </style>
 <script>
+import AlbumContentItem from "~/components/AlbumContentItem";
+
     export default {
         name: "Home",
+        components: {AlbumContentItem},
         data() {
             return {
-                slide: 0,
-                featured: []
+                featured: {uuid: null, registration: null},
+                stats: {registrations: 0, photos: 0, airlines: 0},
+                recent_photos: []
             };
         },
         async mounted() {
             await this.$axios
-                .$get("https://pics.thomas.gg/api/featured", {})
+                .$get("https://pics.thomas.gg/api/home", {})
                 .then(res => {
-                    this.featured = res;
+                    this.featured = res.featured;
+                    this.stats = res.statistics;
+                    this.recent_photos = res.recent_photos;
                 })
                 .catch(res => { });
         }

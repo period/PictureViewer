@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1>Search</h1>
-    <overlay :show="!loaded" :key="deletionKey">
+    <div :key="deletionKey">
         <div v-for="(ors, orIndex) in query" :key="'or_' + orIndex">
           <div class="card card-border text-center">
           <div v-for="(and, andIndex) in ors" :key="'and_' + andIndex">
@@ -12,7 +12,7 @@
             <b>or</b>
           </div>
         </div>
-    </overlay>
+    </div>
     <br>
     <strong>Sort by</strong>
     <div class="row">

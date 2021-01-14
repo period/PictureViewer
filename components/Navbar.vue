@@ -93,7 +93,7 @@ export default {
             this.fadeIn = true;
             this.fadeOut = false;
         }
-        if(!isScrollDown && currentPosition >= 60) {
+        if(!isScrollDown && currentPosition <= 80) {
             this.fadeIn = false;
             this.fadeOut = true;
         }
