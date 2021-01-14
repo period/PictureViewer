@@ -70,6 +70,11 @@ export default {
           noAnimate: $nuxt.$route.name != "index"
       }
   },
+  watch: {
+    $route () {
+      this.onScroll();
+    }
+  },
   methods: {
       onScroll() {
         if($nuxt.$route.name != "index")  {
