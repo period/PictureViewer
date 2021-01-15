@@ -20,7 +20,6 @@
     "nuxt-fontawesome": "^0.4.0",
     "nuxt-lazy-load": "^1.2.4",
     "vue-country-flag": "^2.0.1",
-    "vue-zoom-on-hover": "git+https://github.com/Rundik/vue-zoom-on-hover.git",
     "vue2-datepicker": "^3.8.2"
   },
   "devDependencies": {}

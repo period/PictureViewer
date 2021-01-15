@@ -12,7 +12,7 @@
         <n-link :to="'/photo/' + photo.relative.next"><button  v-if="photo.relative.next != null" class="btn btn-primary float-right" :to="'/photo/' + photo.relative.next"><fa :icon="['fas', 'chevron-right']" /> Next Photo</button></n-link>
       </div>
     </div>
-    <zoom-on-hover :scale="1.1" :img-normal="'https://pics.thomas.gg/storage/full/' + this.$route.params.uuid + '.jpg'" id="photo" class="mt-2 img-fluid" @load="imageLoaded()" />
+    <img :src="'https://pics.thomas.gg/storage/full/' + this.$route.params.uuid + '.jpg'" id="photo" class="mt-2 img-fluid" @load="imageLoaded()">
       <div class="row mt-2">
         <div class="col-md-4">
           <h5><fa :icon="['fas', 'list-ol']" /> UUID</h5>
@@ -68,14 +68,12 @@
 </template>
 <script>
 import AlbumItem from "~/components/AlbumItem";
-import ZoomOnHover from "vue-zoom-on-hover";
-import Vue from "vue";
-Vue.use(ZoomOnHover); // WHY DOES THIS HAVE TO BE SO COMPLICATED LOL WHO MADE THIS COMPONENT 🤡
+
 import CountryFlag from 'vue-country-flag'
 import EXIF from 'exif-js'
 export default {
   name: "Photo",
-  components: { CountryFlag, AlbumItem},
+  components: { CountryFlag, AlbumItem },
   mounted() {
     this.getPhoto();
   },
