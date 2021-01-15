@@ -31,6 +31,9 @@
   </nav>
 </template>
 <style scoped>
+.nav-link {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
 .noanimate {
     background-color: rgb(79,102,115);
 }
