@@ -13,18 +13,32 @@
               <collection-content-item :item="item"></collection-content-item>
             </div>
         </div>
-        <h3>Missing/Needs retake:</h3>
-        <div v-if="missingAirlines.length == 0"><p>None! :)</p></div>
-        <div v-if="missingAirlines.length != 0">
-          <div v-for="airline in missingAirlines" :key="airline.icao">
-            <b-card :title="missing[airline].name">
-              <b-row>
-                <b-col sm=2 v-for="aircraft in missing[airline].aircraft" :key="aircraft.registration">
-                  <p class="text-warning" v-if="aircraft.state == 'NOT_PHOTOGRAPHED'">{{ aircraft.registration }}</p>
-                  <p class="text-info" v-if="aircraft.state == 'NEEDS_RETAKE'">{{ aircraft.registration }}</p>
-                </b-col>
-              </b-row>
-            </b-card>
+        <div class="row">
+          <div class="col-md-9">
+            <h3>Missing/Needs retake:</h3>
+          </div>
+          <div class="col-md-3">
+            <div class="float-right">
+              <label>Include photographed? <input type="checkbox" v-model="include_photographed" /></label>
+            </div>
+          </div>
+        </div>
+        <div v-if="airlines.length == 0"><p>None! :)</p></div>
+        <div v-if="airlines.length != 0">
+          <div v-for="airline in airlines.filter((airline) => { return all_grouped[airline].aircraft.filter((aircraft) => {return (include_photographed && aircraft.state == 'PHOTOGRAPHED') || aircraft.state != 'PHOTOGRAPHED'}).length > 0})" :key="airline.icao">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{ all_grouped[airline].name }}</h5>
+                <div class="row card-text">
+                  <div class="col-sm-2" v-for="aircraft in all_grouped[airline].aircraft.filter((aircraft) => {return (include_photographed && aircraft.state == 'PHOTOGRAPHED') || aircraft.state != 'PHOTOGRAPHED'})" :key="aircraft.registration">
+                    <p class="text-warning" v-if="aircraft.state == 'NOT_PHOTOGRAPHED'">{{ aircraft.registration }}</p>
+                    <p class="text-info" v-if="aircraft.state == 'NEEDS_RETAKE'">{{ aircraft.registration }}</p>
+                    <p class="text-success" v-if="aircraft.state == 'PHOTOGRAPHED'">{{ aircraft.registration }}</p>
+                    <p class="text-danger" v-if="aircraft.state == 'IMPOSSIBLE'">{{ aircraft.registration }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
     </div>
@@ -46,8 +60,8 @@ export default {
         .then(res => {
           this.collection = res;
           this.photos = res.aircraft.filter(aircraft => aircraft.photo!=null)
-          this.missing = res.missing;
-          this.missingAirlines = Object.keys(res.missing)
+          this.all_grouped = res.all_grouped;
+          this.airlines = Object.keys(res.all_grouped);
           this.items = res.aircraft;
           this.loaded = true;
           if(this.$route.hash) {
@@ -64,9 +78,10 @@ export default {
       collection: {states:{}},
       items: [],
       photos: [],
-      missing: [],
-      missingAirlines: [],
-      loaded: false
+      all_grouped: [],
+      airlines: [],
+      loaded: false,
+      include_photographed: false
     };
   }
 };

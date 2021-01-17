@@ -8,7 +8,7 @@
           class="card-img-top"
         >
       <div class="card-body">
-          <h5 class="card-title">{{ item.registration }} <badge class="badge badge-pill badge-warning" v-if="item.state == 'NEEDS_RETAKE'">Needs Retake</badge></h5>
+          <h5 class="card-title">{{ item.registration }} <span class="badge badge-pill badge-warning" v-if="item.state == 'NEEDS_RETAKE'">Needs Retake</span></h5>
           <div class="row text-muted">
             <div class="col-md-5">
               <p class="card-muted"><strong><fa class="card-icon fa-fw align-middle" :icon="['fas', 'calendar-day']" /></strong> Taken <strong>{{ time }}</strong></p>
