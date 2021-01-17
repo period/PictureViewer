@@ -14,7 +14,7 @@
     </div>
     <img v-if="!zoomable" :src="'https://pics.thomas.gg/storage/full/' + this.$route.params.uuid + '.jpg'" id="photo" class="mt-2 img-fluid" @load="imageLoaded()" @click="zoomable = true">
     <zoom-on-hover v-if="zoomable" :scale="1.1" :img-normal="'https://pics.thomas.gg/storage/full/' + this.$route.params.uuid + '.jpg'" class="mt-2 img-fluid" />
-      <div class="row mt-2">
+    <div class="row mt-2">
         <div class="col-md-4">
           <h5><fa :icon="['fas', 'list-ol']" /> UUID</h5>
           <hr>
