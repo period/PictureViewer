@@ -12,7 +12,8 @@
         <n-link :to="'/photo/' + photo.relative.next"><button  v-if="photo.relative.next != null" class="btn btn-primary float-right" :to="'/photo/' + photo.relative.next"><fa :icon="['fas', 'chevron-right']" /> Next Photo</button></n-link>
       </div>
     </div>
-    <zoom-on-hover :scale="1.1" :img-normal="'https://pics.thomas.gg/storage/full/' + this.$route.params.uuid + '.jpg'" id="photo" class="mt-2 img-fluid" @load="imageLoaded()" />
+    <img v-if="!zoomable" :src="'https://pics.thomas.gg/storage/full/' + this.$route.params.uuid + '.jpg'" id="photo" class="mt-2 img-fluid" @load="imageLoaded()" @click="zoomable = true">
+    <zoom-on-hover v-if="zoomable" :scale="1.1" :img-normal="'https://pics.thomas.gg/storage/full/' + this.$route.params.uuid + '.jpg'" class="mt-2 img-fluid" />
       <div class="row mt-2">
         <div class="col-md-4">
           <h5><fa :icon="['fas', 'list-ol']" /> UUID</h5>
@@ -115,7 +116,8 @@ export default {
     return {
       photo: {aircraft: {}, albums: [], relative: {}},
       exif: {shutter: 0, aperture: 0, focalLength: 0},
-      loaded: false
+      loaded: false,
+      zoomable: false
     };
   }
 };
