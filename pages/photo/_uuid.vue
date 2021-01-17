@@ -60,7 +60,7 @@
       <h4>This photo is in {{ photo.albums.length + " album" + appendSuffix(photo.albums.length) }}:</h4>
       <div class="card-deck">
         <div v-for="album in photo.albums" :key="album.id">
-          <album-item :album="album"></album-item>
+          <album-item :album="album" :photo="'#' + photo.uuid"></album-item>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <n-link :to="'/album/' + album.id" class="nocolour">
+  <n-link :to="'/album/' + album.id + photo" class="nocolour">
     <div class="card mb-3 card-hover">
       <img
         :src="
@@ -28,6 +28,10 @@ export default {
     album: {
       type: Object,
       default: {}
+    },
+    photo: {
+      type: String,
+      default: ""
     }
   },
   data() {
