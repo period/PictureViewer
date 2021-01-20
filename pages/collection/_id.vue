@@ -31,15 +31,13 @@
                 <h5 class="card-title">{{ all_grouped[airline].name }}</h5>
                 <div class="row card-text">
                   <div class="col-sm-2" v-for="aircraft in all_grouped[airline].aircraft.filter((aircraft) => {return (include_photographed && aircraft.state == 'PHOTOGRAPHED') || aircraft.state != 'PHOTOGRAPHED'})" :key="aircraft.registration">
-                    <p class="text-warning" v-if="aircraft.state == 'NOT_PHOTOGRAPHED'">{{ aircraft.registration }}</p>
-                    <p class="text-info" v-if="aircraft.state == 'NEEDS_RETAKE'">{{ aircraft.registration }}</p>
-                    <p class="text-success" v-if="aircraft.state == 'PHOTOGRAPHED'">{{ aircraft.registration }}</p>
-                    <p class="text-danger" v-if="aircraft.state == 'IMPOSSIBLE'">{{ aircraft.registration }}</p>
+                    <p :class="getClassFromState(aircraft.state)">{{ aircraft.registration }}<span v-if="!aircraft.is_ground">*</span></p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <small>* denotes high altitude</small>
         </div>
     </div>
   </div>
@@ -54,6 +52,14 @@ export default {
     this.getPhotos();
   },
   methods: {
+    getClassFromState(state) {
+      return {
+        "PHOTOGRAPHED": "text-success",
+        "NEEDS_RETAKE": "text-info",
+        "NOT_PHOTOGRAPHED": "text-warning",
+        "IMPOSSIBLE": "text-danger"
+      }[state]
+    },
     async getPhotos() {
       await this.$axios
         .$get("https://pics.thomas.gg/api/collections/view?id=" + this.$route.params.id, {})
