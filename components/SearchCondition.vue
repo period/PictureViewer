@@ -16,7 +16,14 @@
           </select>
         </div>
         <div class="col-md-3 px-1" v-if="getValueDropdownOptions().length == 0 && this.selectedField != 'timestamp' && (this.selectedField == 'caption' && this.selectedOperator != null && this.selectedOperator.endsWith('null')) == false">
-          <input class="form-control" v-model="selectedValue" placeholder="Enter a value" :disabled="selectedOperator == null" @input="update()">
+          <vue-bootstrap-typeahead 
+            v-model="selectedValue"
+            :data="getTypeaheadData()"
+            v-if="this.selectedField == 'registration'"
+            @input="update()"
+
+          />
+          <input v-else class="form-control" v-model="selectedValue" placeholder="Enter a value" :disabled="selectedOperator == null" @input="update()">
         </div>
         <div class="col-md-3 px-1" v-if="this.selectedField == 'timestamp'">
           <date-picker v-model="selectedValue" class="mb-2" @input="update()"></date-picker>
@@ -29,6 +36,7 @@
 <script>
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
+import VueBootstrapTypeahead from 'vue-bootstrap-typeahead';
 export default {
   name: "SearchCondition",
   props: {
@@ -43,15 +51,24 @@ export default {
     value: {
         default: null
     },
-    valueProps: {
+    indexes: {
         type: Object,
+    },
+    types: {
+
+    },
+    airlines: {
+
+    },
+    registrations: {
+      type: Array
     },
     displayOr: {
         type: Boolean,
         default: true
     }
   },
-  components: {DatePicker},
+  components: {DatePicker, VueBootstrapTypeahead},
   data() {
     return {
         fields: [{value: null, text: "Select field..."}, {value: "registration", text: "Aircraft registration"}, {value: "timestamp", text: "Date taken"}, {value: "aircraftType", text: "Aircraft type"}, {value: "msn", text: "Manufacturer's serial number (MSN)"}, {value: "airline", text: "Airline"}, {value: "camera", text: "Camera"}, {value: "caption", text: "Caption"}],
@@ -71,18 +88,22 @@ export default {
         if(this.selectedField == "caption" && this.selectedOperator != null && this.selectedOperator.endsWith("null")) this.selectedValue = " ";
         if(this.selectedField == "timestamp" && this.selectedValue != null) {
             let tmpDate = new Date(this.selectedValue);
-            $nuxt.$emit("condition-update", this.valueProps.orIndex, this.valueProps.andIndex, this.selectedField, this.selectedOperator, tmpDate.getTime() / 1000);
+            $nuxt.$emit("condition-update", this.indexes.or, this.indexes.and, this.selectedField, this.selectedOperator, tmpDate.getTime() / 1000);
         }
-        else $nuxt.$emit("condition-update", this.valueProps.orIndex, this.valueProps.andIndex, this.selectedField, this.selectedOperator, this.selectedValue);
+        else $nuxt.$emit("condition-update", this.indexes.or, this.indexes.and, this.selectedField, this.selectedOperator, this.selectedValue);
       },
       and() {
-        $nuxt.$emit("search-addand", this.valueProps.orIndex, this.valueProps.andIndex);
+        $nuxt.$emit("search-addand", this.indexes.or, this.indexes.and);
       },
       or() {
-        $nuxt.$emit("search-addor", this.valueProps.orIndex, this.valueProps.andIndex);
+        $nuxt.$emit("search-addor", this.indexes.or, this.indexes.and);
       },
       remove() {
-        $nuxt.$emit("search-remove", this.valueProps.orIndex, this.valueProps.andIndex);
+        $nuxt.$emit("search-remove", this.indexes.or, this.indexes.and);
+      },
+      getTypeaheadData() {
+        if(this.selectedField == "registration") return this.registrations;
+        return [];
       },
       getOperators() {
         if(this.selectedField == null) return [{value: null, text: "Select operator..."}];
@@ -93,8 +114,8 @@ export default {
       getValueDropdownOptions() {
           if(this.selectedField == null) return [];
           if(this.selectedOperator != null && (this.selectedOperator == "equals" || this.selectedOperator == "not_equals")) {
-              if(this.selectedField == "aircraftType") return this.valueProps.types;
-              if(this.selectedField == "airline") return this.valueProps.airlines;
+              if(this.selectedField == "aircraftType") return this.types;
+              if(this.selectedField == "airline") return this.airlines;
           }
           return [];
       }

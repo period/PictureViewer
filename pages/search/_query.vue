@@ -41,6 +41,10 @@ export default {
         console.log("Upper casing registration!");
         condition.value = condition.value.toUpperCase();
       }
+      
+      if(condition.operator == "equals" && condition.value == "Unknown") return condition.field + " IS NULL";
+      if(condition.operator == "not_equals" && condition.value == "Unknown") return condition.field + " IS NOT NULL";
+
       if(condition.operator == "equals") return condition.field + " = '" + condition.value + "'";
       if(condition.operator == "contains") return condition.field + " LIKE '%" + condition.value + "%'";
       if(condition.operator == "startsWith") return condition.field + " LIKE '" + condition.value + "%'";

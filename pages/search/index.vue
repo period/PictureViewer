@@ -5,7 +5,7 @@
         <div v-for="(ors, orIndex) in query" :key="'or_' + orIndex">
           <div class="card card-border text-center">
           <div v-for="(and, andIndex) in ors" :key="'and_' + andIndex">
-            <search-condition class="mb-1" :valueProps="{types: types, airlines: airlines, andIndex: andIndex, orIndex: orIndex}" :field="and.field" :operator="and.operator" :value="and.value" :displayOr="!(orIndex < query.length-1) && !(andIndex < query[orIndex].length-1)" />
+            <search-condition class="mb-1" :registrations="registrations" :airlines="airlines" :types="types" :indexes="{and: andIndex, or: orIndex}" :field="and.field" :operator="and.operator" :value="and.value" :displayOr="!(orIndex < query.length-1) && !(andIndex < query[orIndex].length-1)" />
           </div>
           </div>
           <div v-if="orIndex < query.length-1" class="text-center separator">
@@ -50,7 +50,6 @@ export default {
   name: "Search",
   components: {SearchCondition},
   mounted() {
-    this.getProperties();
     this.$nuxt.$on("condition-update", (orIndex, andIndex, field, operator, value) => {
       this.query[orIndex][andIndex] = {field: field, operator: operator, value: value};
       this.generateSQL();
@@ -82,6 +81,10 @@ export default {
       this.$forceUpdate();
       this.deletionKey++;
     });
+
+    // Form hints (also serves as preload for database)
+    if(sessionStorage.getItem("database") == null) this.getData();
+      else this.prepareFormHints();
   },
   methods: {
     generateSQL() {
@@ -97,6 +100,9 @@ export default {
       this.sql += " ORDER BY " + this.sort_key + " " + this.sort_order;
     },
     conditionToSQL(condition) {
+      if(condition.operator == "equals" && condition.value == "Unknown") return condition.field + " IS NULL";
+      if(condition.operator == "not_equals" && condition.value == "Unknown") return condition.field + " IS NOT NULL";
+
       if(condition.operator == "equals") return condition.field + " = '" + condition.value + "'";
       if(condition.operator == "contains") return condition.field + " LIKE '%" + condition.value + "%'";
       if(condition.operator == "startsWith") return condition.field + " LIKE '" + condition.value + "%'";
@@ -120,24 +126,34 @@ export default {
             if(value != null) return value;
         })));
     },
-    async getProperties() {
-      if(sessionStorage.getItem("database-properties") == null) {
-        await this.$axios
-          .$get("https://pics.thomas.gg/api/search/properties", {})
-          .then(res => {
-              sessionStorage.setItem("database-properties", JSON.stringify(res));
-              for(var aircraftType in res.types) this.types.push({value: aircraftType, text: aircraftType + " (" + res.types[aircraftType] + " unique aircraft)"})
-              for(var airline in res.airlines) this.airlines.push({value: airline, text: airline+ " (" + res.airlines[airline] + " unique aircraft)"})
-              this.loaded = true;
-          })
-          .catch(res => {});
-      }
-      else {
-        let res = JSON.parse(sessionStorage.getItem("database-properties"));
-        for(var aircraftType in res.types) this.types.push({value: aircraftType, text: aircraftType + " (" + res.types[aircraftType] + " unique aircraft)"})
-        for(var airline in res.airlines) this.airlines.push({value: airline, text: airline+ " (" + res.airlines[airline] + " unique aircraft)"})
-        this.loaded = true;
-      }
+    async getData() {
+      await this.$axios
+        .$get("https://pics.thomas.gg/api/search/data")
+        .then(res => {
+          sessionStorage.setItem("database", JSON.stringify(res));
+          this.prepareFormHints();
+        })
+        .catch(res => {});
+    },
+    prepareFormHints() {
+      this.alasql.promise("SELECT DISTINCT registration, aircraftType, msn, airline FROM ?;", [JSON.parse(sessionStorage.getItem("database"))]).then(sqRes => {
+        let types = {};
+        let airlines = {};
+        for(let i = 0; i < sqRes.length; i++) {
+          this.registrations.push(sqRes[i].registration);
+          if(sqRes[i].aircraftType == null) sqRes[i].aircraftType = "Unknown";
+          if(sqRes[i].airline == null) sqRes[i].airline = "Unknown";
+          if(types[sqRes[i].aircraftType] == null) types[sqRes[i].aircraftType] = 0;
+          if(airlines[sqRes[i].airline] == null) airlines[sqRes[i].airline] = 0;
+          types[sqRes[i].aircraftType]++;
+          airlines[sqRes[i].airline]++;
+        }
+        let sorted_types = Object.keys(types).sort((a,b) => {return types[b]-types[a]});
+        let sorted_airlines = Object.keys(airlines).sort((a,b) => {return airlines[b]-airlines[a]});
+
+        for(let aircraftType of sorted_types) this.types.push({value: aircraftType, text: aircraftType + " (" + types[aircraftType] + " unique aircraft)"})
+        for(let airline of sorted_airlines) this.airlines.push({value: airline, text: airline+ " (" + airlines[airline] + " unique aircraft)"})
+      });
     }
   },
   data() {
@@ -149,7 +165,8 @@ export default {
         query: [[{field: null, operator: null, value: null}]],
         types: [{value: null, text: "Select an aircraft type"}],
         airlines: [{value: null, text: "Select an airline callsign"}],
-        sql: ""
+        sql: "",
+        registrations: []
     };
   }
 };
