@@ -33,6 +33,7 @@ export default {
   plugins: [
     "~/plugins/alasql.js",
     "~/plugins/caption_parser.js",
+    "~/plugins/tooltip.js"
   ],
   /*
   ** Nuxt.js dev-modules

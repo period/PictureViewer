@@ -19,6 +19,7 @@
     "nuxt": "^2.14.5",
     "nuxt-fontawesome": "^0.4.0",
     "nuxt-lazy-load": "^1.2.4",
+    "v-tooltip": "^3.0.0-alpha.21",
     "vue-bootstrap-typeahead": "^0.2.6",
     "vue-country-flag": "^2.0.1",
     "vue-zoom-on-hover": "git+https://github.com/Rundik/vue-zoom-on-hover.git",
