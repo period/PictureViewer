@@ -23,7 +23,7 @@
             <n-link to="/info" class="nav-link">About</n-link>
           </li>
           <li class="nav-item" v-bind:class="{'active': $nuxt.$route.name == 'search'}">
-            <n-link to="/search" class="nav-link"><fa :icon="['fas', 'search']" /></n-link>
+            <n-link to="/search" class="nav-link"><fa :icon="['fas', 'search']" /> Search</n-link>
           </li>
         </ul>
       </div>
