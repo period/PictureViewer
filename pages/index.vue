@@ -85,6 +85,7 @@ import AlbumContentItem from "~/components/AlbumContentItem";
             };
         },
         async mounted() {
+            window.addEventListener("scroll", this.onScroll);
             await this.$axios
                 .$get("https://pics.thomas.gg/api/home", {})
                 .then(res => {
@@ -93,6 +94,19 @@ import AlbumContentItem from "~/components/AlbumContentItem";
                     this.recent_photos = res.recent_photos;
                 })
                 .catch(res => { });
+        },
+        methods: {
+            async onScroll() {
+                let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight === document.documentElement.offsetHeight
+                if(bottomOfWindow) {
+                    await this.$axios
+                        .$get("https://pics.thomas.gg/api/recent?offset=" + this.recent_photos[this.recent_photos.length-1].timestamp, {})
+                        .then(res => {
+                            this.recent_photos.push(...res);
+                        })
+                        .catch(res => { });
+                }
+            }
         }
     };
 </script>
