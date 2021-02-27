@@ -15,6 +15,9 @@ export default {
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       { rel: 'stylesheet', type: 'text/css', href: 'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css'},
       { rel: 'stylesheet', type: 'text/css', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap'}
+    ],
+    script: [
+      {defer: true, src: "https://static.cloudflareinsights.com/beacon.min.js", "data-cf-beacon": '{"token": "6f2d94ac2ead46cca55df8353c27ff69", "spa": true}'}
     ]
   },
   /*
