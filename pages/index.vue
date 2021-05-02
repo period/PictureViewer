@@ -95,6 +95,9 @@ import AlbumContentItem from "~/components/AlbumContentItem";
                 })
                 .catch(res => { });
         },
+        beforeDestroy() {
+            window.removeEventListener("scroll", this.onScroll);
+        },
         methods: {
             async onScroll() {
                 let bottomOfWindow = Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop) + window.innerHeight === document.documentElement.offsetHeight
