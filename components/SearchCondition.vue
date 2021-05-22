@@ -21,6 +21,7 @@
             :data="getTypeaheadData()"
             v-if="this.selectedField == 'registration'"
             @input="update()"
+            placeholder="Enter a registration"
 
           />
           <input v-else class="form-control" v-model="selectedValue" placeholder="Enter a value" :disabled="selectedOperator == null" @input="update()">
