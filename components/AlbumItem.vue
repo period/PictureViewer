@@ -5,6 +5,7 @@
         :src="
           'https://pics.thomas.gg/storage/thumbnails/' + album.header + '.jpg'
         "
+        style="min-width: 512px"
         class="card-img-top"
       >
       <div class="card-body">
