@@ -31,13 +31,13 @@
                 <h5 class="card-title">{{ all_grouped[airline].name }}</h5>
                 <div class="row card-text">
                   <div class="col-sm-2" v-for="aircraft in all_grouped[airline].aircraft.filter((aircraft) => {return (include_photographed && aircraft.state == 'PHOTOGRAPHED') || aircraft.state != 'PHOTOGRAPHED'})" :key="aircraft.registration">
-                    <p :class="getClassFromState(aircraft.state)">{{ aircraft.registration }}<span v-if="!aircraft.is_ground">*</span></p>
+                    <p :class="getClassFromState(aircraft.state)">{{ aircraft.registration }}<span v-if="!aircraft.is_ground">*</span><span v-if="aircraft.is_bad_camera">^</span></p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <small>* denotes high altitude</small>
+          <small>* denotes high altitude; ^ denotes non-Z7 photo</small>
         </div>
     </div>
   </div>
