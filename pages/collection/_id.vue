@@ -24,7 +24,7 @@
           </div>
         </div>
         <div v-if="airlines.length == 0"><p>None! :)</p></div>
-        <div v-if="airlines.length != 0">
+        <div v-else>
           <div v-for="airline in airlines.filter((airline) => { return all_grouped[airline].aircraft.filter((aircraft) => {return (include_photographed && aircraft.state == 'PHOTOGRAPHED') || aircraft.state != 'PHOTOGRAPHED'}).length > 0})" :key="airline.icao">
             <div class="card">
               <div class="card-body">
