@@ -9,21 +9,18 @@
         <div v-for="item in photos" :key="item.id" class="col-6">
           <collection-content-item :item="item"></collection-content-item>
         </div>
-        <div class="col-12">
-          <div class="row">
-          <div class="col-md-9">
+        </div>
+        <div class="row">
+          <div class="col-6">
             <h3>Missing/Needs retake:</h3>
           </div>
-          <div class="col-md-3">
-            <div class="float-right">
+          <div class="col-6 text-right">
               <label>Include photographed? <input type="checkbox" v-model="include_photographed" /></label>
-            </div>
-          </div>
           </div>
         </div>
         <div v-if="airlines.length == 0"><p>None! :)</p></div>
         <div v-else>
-          <div v-for="airline in airlines.filter((airline) => { return all_grouped[airline].aircraft.filter((aircraft) => {return (include_photographed && aircraft.state == 'PHOTOGRAPHED') || aircraft.state != 'PHOTOGRAPHED'}).length > 0})" :key="airline.icao">
+          <div v-for="airline in airlines.filter((airline) => { return all_grouped[airline].aircraft.filter((aircraft) => {return (include_photographed && aircraft.state == 'PHOTOGRAPHED') || aircraft.state != 'PHOTOGRAPHED'}).length > 0})" :key="airline.icao" class="col-12">
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">{{ all_grouped[airline].name }}</h5>
