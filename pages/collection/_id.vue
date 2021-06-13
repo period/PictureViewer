@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row py-2">
-          <div class="col-12">
+          <div class="col-12 mb-4">
             <h1>{{collection.name}}</h1>
             <collection-progress :states="collection.states"></collection-progress>
             <h3 class="mt-2">Photographed:</h3>
