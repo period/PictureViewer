@@ -1,6 +1,6 @@
 <template>
   <n-link :to="'/photo/' + item.photo" class="nocolour">
-    <div class="card mb-3 card-hover">
+    <div class="card mb-4 card-hover">
       <img
           :src="
             'https://pics.thomas.gg/storage/thumbnails/' + item.photo + '.jpg'

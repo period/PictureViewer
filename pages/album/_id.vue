@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <div>
-      <h1>{{ album.name }}</h1>
-        <div class="card-group">
-            <div v-for="photo in photos" :key="photo.uuid">
-              <album-content-item :photo="photo" :id="photo.uuid"></album-content-item>
-            </div>
-        </div>
+    <div class="row py-2">
+      <div class="col-12 py-4">
+        <h1>{{ album.name }}</h1>
+      </div>
+      <div v-for="photo in photos" :key="photo.uuid" class="col-6">
+        <album-content-item :photo="photo" :id="photo.uuid"></album-content-item>
+      </div>
     </div>
   </div>
 </template>

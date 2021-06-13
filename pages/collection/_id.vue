@@ -1,19 +1,16 @@
 <template>
   <div class="container">
-    <div>
-        <h1>{{collection.name}}</h1>
-        <div class="row mt-2">
-          <div class="col-lg-12">
+    <div class="row py-2">
+          <div class="col-12">
+            <h1>{{collection.name}}</h1>
             <collection-progress :states="collection.states"></collection-progress>
+            <h3 class="mt-2">Photographed:</h3>
           </div>
+        <div v-for="item in photos" :key="item.id" class="col-6">
+          <collection-content-item :item="item"></collection-content-item>
         </div>
-        <h3>Photographed:</h3>
-        <div class="card-deck">
-            <div v-for="item in photos" :key="item.id">
-              <collection-content-item :item="item"></collection-content-item>
-            </div>
-        </div>
-        <div class="row">
+        <div class="col-12">
+          <div class="row">
           <div class="col-md-9">
             <h3>Missing/Needs retake:</h3>
           </div>
@@ -21,6 +18,7 @@
             <div class="float-right">
               <label>Include photographed? <input type="checkbox" v-model="include_photographed" /></label>
             </div>
+          </div>
           </div>
         </div>
         <div v-if="airlines.length == 0"><p>None! :)</p></div>

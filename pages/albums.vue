@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <div>
-      <h1>Albums</h1>
-        <div class="card-deck">
-            <div v-for="album in albums" :key="album.id">
-              <album-item :album="album"></album-item>
-            </div>
-        </div>
+    <div class="row py-2">
+      <div class="col-12 py-4">
+        <h1>Albums</h1>
+      </div>
+      <div v-for="album in albums" :key="album.id" class="col-6">
+        <album-item :album="album"></album-item>
+      </div>
     </div>
   </div>
 </template>
